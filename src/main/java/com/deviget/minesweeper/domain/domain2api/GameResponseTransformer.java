@@ -1,6 +1,5 @@
 package com.deviget.minesweeper.domain.domain2api;
 
-import com.deviget.minesweeper.api.response.CellResponse;
 import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.Game;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class GameResponseTransformer {
@@ -17,17 +15,21 @@ public class GameResponseTransformer {
 	private CellsResponseTransformer cellsResponseTransformer;
 
 	public GameResponse transform(Game game) {
-		return new GameResponse(game.getId(),game.getUser(),game.getGameTime(),game.getLeftFlags(), null);
+		return new GameResponse.Builder()
+				.withId(game.getId())
+				.withUser(game.getUser())
+				.withGameTime(game.getGameTime())
+				.withLeftFlags(game.getLeftFlags())
+				.build();
 	}
 
 	public GameResponse transform(Game game, List<Cell> affectedCells) {
-		List<CellResponse> affectedCellsResponse = this.transform(affectedCells);
-		return new GameResponse(game.getId(),game.getUser(),game.getGameTime(),game.getLeftFlags(), affectedCellsResponse);
-	}
-
-	private List<CellResponse> transform(List<Cell> affectedCells) {
-		return affectedCells.stream()
-				.map( affectedCell -> this.cellsResponseTransformer.transform(affectedCell))
-				.collect(Collectors.toList());
+		return new GameResponse.Builder()
+				.withId(game.getId())
+				.withUser(game.getUser())
+				.withGameTime(game.getGameTime())
+				.withLeftFlags(game.getLeftFlags())
+				.withAffectedCells(this.cellsResponseTransformer.transform(affectedCells))
+				.build();
 	}
 }
