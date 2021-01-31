@@ -2,10 +2,10 @@ package com.deviget.minesweeper.api.request;
 
 public class GameRequest {
 
+	private String user;
 	private int rows;
 	private int cols;
 	private int mines;
-	private String user;
 
 	public int getRows() {
 		return rows;
