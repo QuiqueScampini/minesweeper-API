@@ -1,8 +1,7 @@
 package com.deviget.minesweeper.repository;
 
-import org.springframework.stereotype.Repository;
+import com.deviget.minesweeper.model.Game;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public class GameRepository {
-
+public interface GameRepository extends CrudRepository<Game,Integer> {
 }

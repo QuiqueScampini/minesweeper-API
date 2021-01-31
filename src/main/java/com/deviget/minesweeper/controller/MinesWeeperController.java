@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.controller;
 
 import com.deviget.minesweeper.api.request.GameRequest;
+import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,7 @@ public class MinesWeeperController {
 
 	@ResponseBody
 	@PostMapping("/createGame")
-	public String createGame(@RequestBody GameRequest gameRequest, @RequestParam String user) {
+	public GameResponse createGame(@RequestBody GameRequest gameRequest, @RequestParam String user) {
 		return gameService.createGame(gameRequest,user);
 	}
-
 }
