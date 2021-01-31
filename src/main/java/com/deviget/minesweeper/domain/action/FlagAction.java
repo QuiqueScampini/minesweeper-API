@@ -1,4 +1,4 @@
-package com.deviget.minesweeper.domain.service;
+package com.deviget.minesweeper.domain.action;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.model.Cell;

@@ -4,6 +4,8 @@ import com.deviget.minesweeper.api.request.Action;
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.api.response.GameResponse;
+import com.deviget.minesweeper.domain.action.FlagAction;
+import com.deviget.minesweeper.domain.action.GameAction;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
 import com.deviget.minesweeper.domain.factory.GameFactory;
 import com.deviget.minesweeper.model.Cell;
@@ -30,7 +32,7 @@ public class GameService {
 	@Autowired
 	private GameResponseTransformer gameResponseTransformer;
 
-	private final EnumMap<Action,GameAction> actionsMap = new EnumMap<>(Action.class);
+	private final EnumMap<Action, GameAction> actionsMap = new EnumMap<>(Action.class);
 
 	@Autowired
 	public GameService(FlagAction flagAction) {
