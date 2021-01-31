@@ -6,8 +6,8 @@ import static com.deviget.minesweeper.model.CellContent.NONE;
 
 public class Cell implements Serializable {
 
-	boolean int row;
-	boolean int col;
+	private  int row;
+	private int col;
 	private boolean mine;
 	private boolean hidden;
 	private CellContent content;
