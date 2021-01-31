@@ -13,8 +13,8 @@ public class GameService {
 	@Autowired
 	private GameRepository gameRepository;
 
-	public GameResponse createGame(GameRequest gameRequest, String user) {
-		Game newGame = gameRepository.save(new Game(user));
+	public GameResponse createGame(GameRequest gameRequest) {
+		Game newGame = gameRepository.save(new Game(gameRequest.getUser()));
 		return new GameResponse(newGame.getId(),newGame.getUser());
 	}
 }

@@ -5,6 +5,7 @@ public class GameRequest {
 	private int rows;
 	private int cols;
 	private int mines;
+	private String user;
 
 	public int getRows() {
 		return rows;
@@ -28,5 +29,13 @@ public class GameRequest {
 
 	public void setMines(int mines) {
 		this.mines = mines;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 }
