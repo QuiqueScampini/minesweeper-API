@@ -13,7 +13,7 @@ public class Cell implements Serializable {
 	private CellContent content;
 	private long value;
 
-	public Cell(boolean mine, long value) {
+	public Cell(int row, int col, boolean mine, long value) {
 		this.mine = mine;
 		this.value = value;
 		hidden = true;

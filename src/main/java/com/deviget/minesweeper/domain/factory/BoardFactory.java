@@ -33,7 +33,7 @@ public class BoardFactory {
 	private Cell createCell(int row, int col, List<Pair<Integer, Integer>>  minesPositions) {
 		boolean isMine = this.isMine(row, col, minesPositions);
 		long value = this.calculateValue(row, col, minesPositions);
-		return new Cell(isMine,value);
+		return new Cell(row, col, isMine, value);
 	}
 
 	private boolean isMine(int row, int col, List<Pair<Integer, Integer>> minesPositions) {
