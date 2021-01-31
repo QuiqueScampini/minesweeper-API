@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(indexes = @Index(columnList = "user"))
@@ -14,6 +15,12 @@ public class Game {
 
 	@Lob
 	private Cell[][] board;
+
+	private LocalDateTime resumedDate;
+
+	private int gameTime;
+
+	private int leftFlags;
 
 	private Game() {
 	}
@@ -30,10 +37,23 @@ public class Game {
 		return board;
 	}
 
+	public int getGameTime() {
+		return gameTime;
+	}
+
+	public void setLeftFlags(int leftFlags) {
+		this.leftFlags = leftFlags;
+	}
+
+	public int getLeftFlags() {
+		return leftFlags;
+	}
+
 	public static class Builder {
 
 		private String user;
 		private Cell[][] board;
+		private int leftFlags;
 
 		public Builder withUser(String user) {
 			this.user = user;
@@ -45,10 +65,16 @@ public class Game {
 			return this;
 		}
 
+		public Builder withLeftFlags(int leftFlags) {
+			this.leftFlags = leftFlags;
+			return this;
+		}
+
 		public Game build(){
 			Game game = new Game();
 			game.user = this.user;
 			game.board = this.board;
+			game.leftFlags = leftFlags;
 			return game;
 		}
 	}
