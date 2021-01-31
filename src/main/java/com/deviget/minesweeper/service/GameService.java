@@ -11,10 +11,18 @@ import org.springframework.stereotype.Service;
 public class GameService {
 
 	@Autowired
+	private BoardFactory boardFactory;
+
+	@Autowired
 	private GameRepository gameRepository;
 
 	public GameResponse createGame(GameRequest gameRequest) {
-		Game newGame = gameRepository.save(new Game(gameRequest.getUser()));
+		String user = gameRequest.getUser();
+		Game newGame = new Game.Builder()
+							.withUser(user)
+							.withBoard(boardFactory.create(gameRequest))
+							.build();
+		newGame = gameRepository.save(newGame);
 		return new GameResponse(newGame.getId(),newGame.getUser());
 	}
 }

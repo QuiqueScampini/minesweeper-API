@@ -15,13 +15,13 @@ public class BoardFactory {
 	private final Random randomGenerator = new Random();
 
 	public Cell[][] create(GameRequest gameRequest) {
-		int cols = gameRequest.getCols();
 		int rows = gameRequest.getRows();
+		int cols = gameRequest.getCols();
 		int mines = gameRequest.getMines();
 
 		List<Pair<Integer, Integer>> minesPositions = this.minesPositions(rows,cols,mines);
 
-		Cell[][] cells = new Cell[cols][rows];
+		Cell[][] cells = new Cell[rows][cols];
 		for(int row = 0; row< rows; row++){
 			for(int col = 0; col< cols; col++){
 				cells[row][col] = this.createCell(row, col, minesPositions);
