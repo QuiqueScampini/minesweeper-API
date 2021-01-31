@@ -1,4 +1,4 @@
-package com.deviget.minesweeper.service;
+package com.deviget.minesweeper.domain.factory;
 
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.model.Cell;
