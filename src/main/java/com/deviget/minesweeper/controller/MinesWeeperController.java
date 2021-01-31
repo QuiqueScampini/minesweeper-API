@@ -1,11 +1,10 @@
 package com.deviget.minesweeper.controller;
 
+import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.api.request.GameRequest;
-import com.deviget.minesweeper.api.response.ErrorResponse;
 import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.controller.validator.RequestValidator;
-import com.deviget.minesweeper.service.GameService;
-import io.swagger.annotations.ApiResponse;
+import com.deviget.minesweeper.domain.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +24,18 @@ public class MinesWeeperController {
 	}
 
 	@ResponseBody
-	@PostMapping("/createGame")
-	@ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class)
+	@PostMapping("/game")
 	public GameResponse createGame(@RequestBody GameRequest gameRequest) {
 		requestValidator.validateRequest(gameRequest);
 		return gameService.createGame(gameRequest);
 	}
+
+	@ResponseBody
+	@PostMapping("/game/{id}")
+	public GameResponse executeAction(@RequestBody ActionRequest actionRequest, @PathVariable(value = "id") int id) {
+		requestValidator.validateRequest(actionRequest);
+		return this.gameService.executeAction(id,actionRequest);
+	}
+
+
 }
