@@ -6,22 +6,11 @@ public class CellResponse {
 
 	int row;
 	int col;
-	private final boolean hidden;
 	private Integer value;
 	private CellContent content;
 
-	public CellResponse(int row, int col, CellContent content) {
-		this.row = row;
-		this.col = col;
-		this.hidden = true;
-		this.content = content;
-	}
+	private CellResponse(){
 
-	public CellResponse(int row, int col, Integer value) {
-		this.row = row;
-		this.col = col;
-		this.hidden = false;
-		this.value = value;
 	}
 
 	public int getRow() {
@@ -32,15 +21,48 @@ public class CellResponse {
 		return col;
 	}
 
-	public boolean isHidden() {
-		return hidden;
-	}
-
 	public Integer getValue() {
 		return value;
 	}
 
 	public CellContent getContent() {
 		return content;
+	}
+
+	public static class Builder {
+
+		int row;
+		int col;
+		private Integer value;
+		private CellContent content;
+
+		public Builder withRow(int row){
+			this.row = row;
+			return this;
+		}
+
+		public Builder withCol(int col){
+			this.col = col;
+			return this;
+		}
+
+		public Builder withValue(Integer value){
+			this.value = value;
+			return this;
+		}
+
+		public Builder withCellContent(CellContent content){
+			this.content = content;
+			return this;
+		}
+
+		public CellResponse build() {
+			CellResponse cellResponse = new CellResponse();
+			cellResponse.row = this.row;
+			cellResponse.col = this.col;
+			cellResponse.value = this.value;
+			cellResponse.content = this.content;
+			return cellResponse;
+		}
 	}
 }
