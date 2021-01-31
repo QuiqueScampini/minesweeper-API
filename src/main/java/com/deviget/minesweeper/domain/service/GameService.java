@@ -36,20 +36,21 @@ public class GameService {
 
 	public GameResponse executeAction(int id, ActionRequest actionRequest) {
 		Game game = this.findGame(id);
+		List<Cell> affectedCells;
 		if(FLAG.equals(actionRequest.getAction())) {
-			List<Cell> affectedCells = this.flag(game,actionRequest);
-			return gameResponseTransformer.transform(gameRepository.save(game),affectedCells.get(0),actionRequest.getRow(),actionRequest.getCol());
+			affectedCells = this.flag(game,actionRequest);
+		} else {
+			affectedCells = this.reveal(game,actionRequest);
 		}
-		return this.reveal(game,actionRequest);
+		return gameResponseTransformer.transform(gameRepository.save(game),affectedCells);
 	}
 
-	private GameResponse reveal(Game game, ActionRequest actionRequest) {
+	private List<Cell> reveal(Game game, ActionRequest actionRequest) {
 		return null;
 	}
 
 	private List<Cell> flag(Game game, ActionRequest actionRequest) {
 		Cell cell = this.retrieveCell(game, actionRequest);
-
 		if(!cell.isHidden())
 			return Collections.emptyList();
 

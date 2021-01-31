@@ -18,16 +18,16 @@ public class CellsResponseTransformer {
 		for(int row = 0; row< rows; row++){
 			for(int col = 0; col< cols; col++){
 				Cell cell = board[row][col];
-				response.add(this.transform(cell,row,col));
+				response.add(this.transform(cell));
 			}
 		}
 		return response;
 	}
 
-	public CellResponse transform(Cell cell,int row, int col) {
+	public CellResponse transform(Cell cell) {
 		if(cell.isHidden()){
-			return new CellResponse(row,col, cell.getContent());
+			return new CellResponse(cell.getRow(),cell.getCol(),cell.getContent());
 		}
-		return new CellResponse(row,col,cell.getValue());
+		return new CellResponse(cell.getRow(),cell.getCol(),cell.getValue());
 	}
 }

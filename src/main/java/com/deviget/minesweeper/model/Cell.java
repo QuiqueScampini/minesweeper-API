@@ -11,9 +11,9 @@ public class Cell implements Serializable {
 	private boolean mine;
 	private boolean hidden;
 	private CellContent content;
-	private long value;
+	private Integer value;
 
-	public Cell(int row, int col, boolean mine, long value) {
+	public Cell(int row, int col, boolean mine, Integer value) {
 		this.mine = mine;
 		this.value = value;
 		hidden = true;
@@ -36,7 +36,15 @@ public class Cell implements Serializable {
 		return content;
 	}
 
-	public long getValue() {
+	public Integer getValue() {
 		return value;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public int getCol() {
+		return col;
 	}
 }

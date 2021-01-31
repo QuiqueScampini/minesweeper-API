@@ -7,8 +7,8 @@ import com.deviget.minesweeper.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class GameResponseTransformer {
@@ -20,9 +20,14 @@ public class GameResponseTransformer {
 		return new GameResponse(game.getId(),game.getUser(),game.getGameTime(),game.getLeftFlags(), null);
 	}
 
-	public GameResponse transform(Game game, Cell affectedCell, int row, int col) {
-		CellResponse affected = this.cellsResponseTransformer.transform(affectedCell, row, col);
-		List<CellResponse> affectedCells = Collections.singletonList(affected);
-		return new GameResponse(game.getId(),game.getUser(),game.getGameTime(),game.getLeftFlags(), affectedCells);
+	public GameResponse transform(Game game, List<Cell> affectedCells) {
+		List<CellResponse> affectedCellsResponse = this.transform(affectedCells);
+		return new GameResponse(game.getId(),game.getUser(),game.getGameTime(),game.getLeftFlags(), affectedCellsResponse);
+	}
+
+	private List<CellResponse> transform(List<Cell> affectedCells) {
+		return affectedCells.stream()
+				.map( affectedCell -> this.cellsResponseTransformer.transform(affectedCell))
+				.collect(Collectors.toList());
 	}
 }

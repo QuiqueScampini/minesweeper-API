@@ -7,17 +7,17 @@ public class CellResponse {
 	int row;
 	int col;
 	private final boolean hidden;
-	private long value;
+	private Integer value;
 	private CellContent content;
 
-	public CellResponse(int row, int col,CellContent content) {
+	public CellResponse(int row, int col, CellContent content) {
 		this.row = row;
 		this.col = col;
 		this.hidden = true;
 		this.content = content;
 	}
 
-	public CellResponse(int row, int col, long value) {
+	public CellResponse(int row, int col, Integer value) {
 		this.row = row;
 		this.col = col;
 		this.hidden = false;
@@ -36,7 +36,7 @@ public class CellResponse {
 		return hidden;
 	}
 
-	public long getValue() {
+	public Integer getValue() {
 		return value;
 	}
 

@@ -32,7 +32,7 @@ public class BoardFactory {
 
 	private Cell createCell(int row, int col, List<Pair<Integer, Integer>>  minesPositions) {
 		boolean isMine = this.isMine(row, col, minesPositions);
-		long value = this.calculateValue(row, col, minesPositions);
+		Integer value = this.calculateValue(row, col, minesPositions);
 		return new Cell(row, col, isMine, value);
 	}
 
@@ -46,11 +46,12 @@ public class BoardFactory {
 	 *	Having a list of mines positions and my row, col i can define my value
 	 *	From that list I keep the positions that surround me and count them.
 	 * **/
-	private long calculateValue(int row, int col, List<Pair<Integer, Integer>> minesPositions) {
-		return minesPositions.stream().filter(minePosition ->
+	private Integer calculateValue(int row, int col, List<Pair<Integer, Integer>> minesPositions) {
+		long count = minesPositions.stream().filter(minePosition ->
 				minePosition.getFirst() >= row - 1 && minePosition.getFirst() <= row + 1 &&
 						minePosition.getSecond() >= col - 1 && minePosition.getSecond() <= col + 1
 		).count();
+		return Math.toIntExact(count);
 	}
 
 
