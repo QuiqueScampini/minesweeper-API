@@ -1,18 +1,19 @@
 package com.deviget.minesweeper.domain.service;
 
+import com.deviget.minesweeper.api.request.Action;
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
 import com.deviget.minesweeper.domain.factory.GameFactory;
 import com.deviget.minesweeper.model.Cell;
-import com.deviget.minesweeper.model.CellContent;
 import com.deviget.minesweeper.model.Game;
 import com.deviget.minesweeper.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
@@ -21,61 +22,37 @@ import static com.deviget.minesweeper.api.request.Action.FLAG;
 public class GameService {
 
 	@Autowired
-	private GameResponseTransformer gameResponseTransformer;
-
-	@Autowired
 	private GameFactory gameFactory;
 
 	@Autowired
 	private GameRepository gameRepository;
 
+	@Autowired
+	private GameResponseTransformer gameResponseTransformer;
+
+	private final EnumMap<Action,GameAction> actionsMap = new EnumMap<>(Action.class);
+
+	@Autowired
+	public GameService(FlagAction flagAction) {
+		actionsMap.put(FLAG,flagAction);
+	}
+
 	public GameResponse createGame(GameRequest gameRequest) {
 		Game game = gameFactory.create(gameRequest);
-		return gameResponseTransformer.transform(gameRepository.save(game));
+		return this.saveAndGenerateResponse(game, Collections.emptyList());
 	}
 
 	public GameResponse executeAction(int id, ActionRequest actionRequest) {
 		Game game = this.findGame(id);
-		List<Cell> affectedCells;
-		if(FLAG.equals(actionRequest.getAction())) {
-			affectedCells = this.flag(game,actionRequest);
-		} else {
-			affectedCells = this.reveal(game,actionRequest);
-		}
-		return gameResponseTransformer.transform(gameRepository.save(game),affectedCells);
+		GameAction action = actionsMap.get(actionRequest.getAction());
+		List<Cell> affectedCells = action.execute(actionRequest, game);
+
+		return this.saveAndGenerateResponse(game,affectedCells);
 	}
 
-	private List<Cell> reveal(Game game, ActionRequest actionRequest) {
-		return null;
-	}
-
-	private List<Cell> flag(Game game, ActionRequest actionRequest) {
-		Cell cell = this.retrieveCell(game, actionRequest);
-		if(!cell.isHidden())
-			return Collections.emptyList();
-
-		switch (cell.getContent()) {
-			case NONE:
-				cell.setContent(CellContent.FLAG);
-				game.setLeftFlags(game.getLeftFlags() - 1 );
-				break;
-			case FLAG:
-				cell.setContent(CellContent.QUESTION);
-				game.setLeftFlags(game.getLeftFlags() + 1 );
-				break;
-			case QUESTION:
-				cell.setContent(CellContent.NONE);
-				break;
-		}
+	private GameResponse saveAndGenerateResponse(Game game,List<Cell> affectedCells) {
 		gameRepository.save(game);
-		return Collections.singletonList(cell);
-	}
-
-	private Cell retrieveCell(Game game, ActionRequest actionRequest) {
-		int row = actionRequest.getRow();
-		int col = actionRequest.getCol();
-		//TODO validate it exists
-		return game.getBoard()[row][col];
+		return gameResponseTransformer.transform(game,affectedCells);
 	}
 
 	private Game findGame(int id) {
