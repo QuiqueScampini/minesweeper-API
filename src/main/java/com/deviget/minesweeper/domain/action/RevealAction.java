@@ -29,11 +29,16 @@ public class RevealAction implements GameAction {
 			return Collections.emptyList();
 
 		Integer value = cell.getValue();
-		if(value < 0 ){
-			throw new RuntimeException("Game Over");
+		if(value < 0 )
+			throw new RuntimeException("You Lost");
+
+		List<Cell> affectedCells = this.revealCell(cell, game);
+
+		if(boardService.allButMinesRevealed(game)) {
+			throw new RuntimeException("You Won");
 		}
 
-		return this.revealCell(cell,game);
+		return affectedCells;
 	}
 
 	private List<Cell> revealCell(Cell cell, Game game) {
@@ -49,6 +54,7 @@ public class RevealAction implements GameAction {
 	private List<Cell> revealAdjacent(Cell cell, Game game) {
 		return this.boardService.retrieveAdjacent(cell,game)
 				.stream()
+				.filter(Cell::isHidden)
 				.map( adjacentCell -> this.revealCell(adjacentCell,game))
 				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
