@@ -15,6 +15,8 @@ public class GameFactory {
 		String user = gameRequest.getUser();
 		return new Game.Builder()
 				.withUser(user)
+				.withRows(gameRequest.getRows())
+				.withCols(gameRequest.getCols())
 				.withBoard(boardFactory.create(gameRequest))
 				.withLeftFlags(gameRequest.getMines())
 				.build();

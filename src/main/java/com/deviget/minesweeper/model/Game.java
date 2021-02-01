@@ -13,14 +13,19 @@ public class Game {
 
 	private String user;
 
+	private int rows;
+
+	private int cols;
+
 	@Lob
 	private Cell[][] board;
+
+	private int leftFlags;
 
 	private LocalDateTime resumedDate;
 
 	private int gameTime;
 
-	private int leftFlags;
 
 	private Game() {
 	}
@@ -31,6 +36,14 @@ public class Game {
 
 	public String getUser() {
 		return user;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public int getCols() {
+		return cols;
 	}
 
 	public Cell[][] getBoard() {
@@ -52,6 +65,8 @@ public class Game {
 	public static class Builder {
 
 		private String user;
+		private int rows;
+		private int cols;
 		private Cell[][] board;
 		private int leftFlags;
 
@@ -60,6 +75,15 @@ public class Game {
 			return this;
 		}
 
+		public Builder withRows(int rows) {
+			this.rows = rows;
+			return this;
+		}
+
+		public Builder withCols(int cols) {
+			this.cols = cols;
+			return this;
+		}
 		public Builder withBoard(Cell[][] board) {
 			this.board = board;
 			return this;
@@ -73,6 +97,8 @@ public class Game {
 		public Game build(){
 			Game game = new Game();
 			game.user = this.user;
+			game.rows = this.rows;
+			game.cols = this.cols;
 			game.board = this.board;
 			game.leftFlags = leftFlags;
 			return game;
