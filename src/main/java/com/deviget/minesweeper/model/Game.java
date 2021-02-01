@@ -3,6 +3,8 @@ package com.deviget.minesweeper.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static com.deviget.minesweeper.model.GameStatus.CREATED;
+
 @Entity
 @Table(indexes = @Index(columnList = "user"))
 public class Game {
@@ -16,6 +18,8 @@ public class Game {
 	private int rows;
 
 	private int cols;
+
+	private GameStatus status;
 
 	@Lob
 	private Cell[][] board;
@@ -96,6 +100,7 @@ public class Game {
 
 		public Game build(){
 			Game game = new Game();
+			game.status = CREATED;
 			game.user = this.user;
 			game.rows = this.rows;
 			game.cols = this.cols;
