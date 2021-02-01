@@ -6,6 +6,7 @@ import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.domain.action.FlagAction;
 import com.deviget.minesweeper.domain.action.GameAction;
+import com.deviget.minesweeper.domain.action.RevealAction;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
 import com.deviget.minesweeper.domain.factory.GameFactory;
 import com.deviget.minesweeper.model.Cell;
@@ -19,6 +20,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
+import static com.deviget.minesweeper.api.request.Action.REVEAL;
 
 @Service
 public class GameService {
@@ -35,8 +37,9 @@ public class GameService {
 	private final EnumMap<Action, GameAction> actionsMap = new EnumMap<>(Action.class);
 
 	@Autowired
-	public GameService(FlagAction flagAction) {
+	public GameService(FlagAction flagAction, RevealAction revealAction) {
 		actionsMap.put(FLAG,flagAction);
+		actionsMap.put(REVEAL,revealAction);
 	}
 
 	public GameResponse createGame(GameRequest gameRequest) {
