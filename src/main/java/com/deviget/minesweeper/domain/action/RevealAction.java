@@ -1,9 +1,11 @@
 package com.deviget.minesweeper.domain.action;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
+import com.deviget.minesweeper.domain.service.BoardService;
 import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.CellContent;
 import com.deviget.minesweeper.model.Game;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,11 +15,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class RevealAction extends GameAction {
+public class RevealAction implements GameAction {
+
+	@Autowired
+	private BoardService boardService;
 
 	@Override
 	public List<Cell> execute(ActionRequest actionRequest, Game game) {
-		Cell cell = this.retrieveCell(game, actionRequest);
+		Cell cell = boardService.retrieveCell(actionRequest,game);
 
 		//If it's not hidden or the content is a flag then we do nothing
 		if(!cell.isHidden() || cell.getContent().equals(CellContent.FLAG))
@@ -42,26 +47,10 @@ public class RevealAction extends GameAction {
 	}
 
 	private List<Cell> revealAdjacent(Cell cell, Game game) {
-		return this.retrieveAdjacent(cell,game).stream()
+		return this.boardService.retrieveAdjacent(cell,game)
+				.stream()
 				.map( adjacentCell -> this.revealCell(adjacentCell,game))
 				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
-	}
-
-	private List<Cell> retrieveAdjacent(Cell cell, Game game) {
-		List<Cell> adjacent = new ArrayList<>();
-
-		Cell[][] board = game.getBoard();
-
-		int cellRow = cell.getRow();
-		int celCol = cell.getCol();
-		for(int row = cellRow -1; row < cellRow + 1; row ++){
-			for(int col=celCol -1; col <= celCol +1; col++){
-				if(row > 0 && col > 0) {
-					adjacent.add(board[row][col]);
-				}
-			}
-		}
-		return adjacent;
 	}
 }
