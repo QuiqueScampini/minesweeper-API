@@ -13,7 +13,6 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -65,12 +64,12 @@ class BoardFactoryTest {
 
 		//Row 1 assertion
 		assertEquals(1, cells[1][0].getValue());
-		assertTrue(cells[1][1].isMine());
-		assertTrue(cells[1][2].isMine());
+		assertEquals(-1, cells[1][1].getValue());
+		assertEquals(-1, cells[1][2].getValue());
 
 		//Row 2 assertion
 		assertEquals(1, cells[2][0].getValue());
 		assertEquals(3, cells[2][1].getValue());
-		assertTrue(cells[2][2].isMine());
+		assertEquals(-1, cells[2][2].getValue());
 	}
 }

@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 @Component
 public class BoardFactory {
 
+	private static final int MINE_VALUE = -1;
+
 	private final Random randomGenerator = new Random();
 
 	public Cell[][] create(GameRequest gameRequest) {
@@ -32,14 +34,16 @@ public class BoardFactory {
 
 	private Cell createCell(int row, int col, List<Pair<Integer, Integer>>  minesPositions) {
 		boolean isMine = this.isMine(row, col, minesPositions);
-		Integer value = this.calculateValue(row, col, minesPositions);
-		return new Cell(row, col, isMine, value);
+		Integer value = isMine? MINE_VALUE : this.calculateValue(row, col, minesPositions);
+		return new Cell(row, col,value);
 	}
 
 	private boolean isMine(int row, int col, List<Pair<Integer, Integer>> minesPositions) {
-		return minesPositions.stream().anyMatch(minePosition ->
-				minePosition.getFirst().equals(row) && minePosition.getSecond().equals(col)
-		);
+		return minesPositions.stream().anyMatch(minePosition -> matchPosition(row,col,minePosition));
+	}
+
+	private boolean matchPosition(int row, int col, Pair<Integer,Integer> minePosition) {
+		return minePosition.getFirst().equals(row) && minePosition.getSecond().equals(col);
 	}
 
 	/**
@@ -48,12 +52,19 @@ public class BoardFactory {
 	 * **/
 	private Integer calculateValue(int row, int col, List<Pair<Integer, Integer>> minesPositions) {
 		long count = minesPositions.stream().filter(minePosition ->
-				minePosition.getFirst() >= row - 1 && minePosition.getFirst() <= row + 1 &&
-						minePosition.getSecond() >= col - 1 && minePosition.getSecond() <= col + 1
+						isInAdjacentRow(row,minePosition) &&
+						isInAdjacentCol(col,minePosition)
 		).count();
 		return Math.toIntExact(count);
 	}
 
+	private boolean isInAdjacentRow(int row, Pair<Integer,Integer> minePosition) {
+		return minePosition.getFirst() >= row - 1 && minePosition.getFirst() <= row + 1;
+	}
+
+	private boolean isInAdjacentCol(int col, Pair<Integer,Integer> minePosition) {
+		return minePosition.getSecond() >= col - 1 && minePosition.getSecond() <= col + 1;
+	}
 
 	/**
 	 * This method gets the random position of the mines

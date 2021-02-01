@@ -6,15 +6,15 @@ import static com.deviget.minesweeper.model.CellContent.NONE;
 
 public class Cell implements Serializable {
 
-	private  int row;
-	private int col;
-	private boolean mine;
+	private final int row;
+	private final int col;
 	private boolean hidden;
 	private CellContent content;
-	private Integer value;
+	private final Integer value;
 
-	public Cell(int row, int col, boolean mine, Integer value) {
-		this.mine = mine;
+	public Cell(int row, int col,Integer value) {
+		this.row = row;
+		this.col = col;
 		this.value = value;
 		hidden = true;
 		content = NONE;
@@ -22,10 +22,6 @@ public class Cell implements Serializable {
 
 	public void setContent(CellContent content) {
 		this.content = content;
-	}
-
-	public boolean isMine() {
-		return mine;
 	}
 
 	public boolean isHidden() {
