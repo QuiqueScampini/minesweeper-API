@@ -1,5 +1,7 @@
 package com.deviget.minesweeper.api.response;
 
+import com.deviget.minesweeper.model.GameStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,19 +9,12 @@ public class GameResponse {
 
 	private	Integer id;
 	private String user;
+	private GameStatus status;
 	private int gameTime;
 	private int leftFlags;
 	private List<CellResponse> affectedCells;
 
 	private GameResponse() {
-	}
-
-	public GameResponse(Integer id, String user, int gameTime, int leftFlags, List<CellResponse> affectedCells) {
-		this.id = id;
-		this.user = user;
-		this.affectedCells = affectedCells;
-		this.gameTime = gameTime;
-		this.leftFlags = leftFlags;
 	}
 
 	public Integer getId() {
@@ -28,6 +23,10 @@ public class GameResponse {
 
 	public String getUser() {
 		return user;
+	}
+
+	public GameStatus getStatus() {
+		return status;
 	}
 
 	public int getGameTime() {
@@ -46,6 +45,7 @@ public class GameResponse {
 
 		private	Integer id;
 		private String user;
+		private GameStatus status;
 		private int gameTime;
 		private int leftFlags;
 		private List<CellResponse> affectedCells = new ArrayList<>();
@@ -57,6 +57,11 @@ public class GameResponse {
 
 		public Builder withUser(String user) {
 			this.user = user;
+			return this;
+		}
+
+		public Builder withStatus(GameStatus status) {
+			this.status = status;
 			return this;
 		}
 
@@ -79,6 +84,7 @@ public class GameResponse {
 			GameResponse gameResponse = new GameResponse();
 			gameResponse.id = this.id;
 			gameResponse.user = this.user;
+			gameResponse.status = this.status;
 			gameResponse.gameTime = this.gameTime;
 			gameResponse.leftFlags = this.leftFlags;
 			gameResponse.affectedCells = this.affectedCells;

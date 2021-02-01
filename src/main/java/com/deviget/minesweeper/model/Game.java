@@ -42,6 +42,10 @@ public class Game {
 		return user;
 	}
 
+	public GameStatus getStatus() {
+		return status;
+	}
+
 	public int getRows() {
 		return rows;
 	}

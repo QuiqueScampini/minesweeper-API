@@ -14,19 +14,11 @@ public class GameResponseTransformer {
 	@Autowired
 	private CellsResponseTransformer cellsResponseTransformer;
 
-	public GameResponse transform(Game game) {
-		return new GameResponse.Builder()
-				.withId(game.getId())
-				.withUser(game.getUser())
-				.withGameTime(game.getGameTime())
-				.withLeftFlags(game.getLeftFlags())
-				.build();
-	}
-
 	public GameResponse transform(Game game, List<Cell> affectedCells) {
 		return new GameResponse.Builder()
 				.withId(game.getId())
 				.withUser(game.getUser())
+				.withStatus(game.getStatus())
 				.withGameTime(game.getGameTime())
 				.withLeftFlags(game.getLeftFlags())
 				.withAffectedCells(this.cellsResponseTransformer.transform(affectedCells))
