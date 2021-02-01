@@ -11,18 +11,26 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 @ControllerAdvice
 public class MinesWeeperExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value={RequestValidationException.class })
 	protected ResponseEntity<Object> handleRequestValidationException(RequestValidationException ex, WebRequest request) {
-		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, ex);
 		return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
 	@ExceptionHandler(value={NotFoundException.class })
-	protected ResponseEntity<Object> handleGameNotFoundException(NotFoundException ex, WebRequest request) {
-		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+	protected ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
+		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, ex);
 		return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+
+	@ExceptionHandler(value={RuntimeException.class })
+	protected ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
+		ErrorResponse errorResponse = new ErrorResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR.getReasonPhrase());
+		return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), INTERNAL_SERVER_ERROR, request);
 	}
 }
