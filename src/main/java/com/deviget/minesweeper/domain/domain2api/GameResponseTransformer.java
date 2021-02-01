@@ -1,12 +1,9 @@
 package com.deviget.minesweeper.domain.domain2api;
 
 import com.deviget.minesweeper.api.response.GameResponse;
-import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class GameResponseTransformer {
@@ -14,16 +11,17 @@ public class GameResponseTransformer {
 	@Autowired
 	private CellsResponseTransformer cellsResponseTransformer;
 
-	public GameResponse transform(Game game, List<Cell> affectedCells) {
+	@Autowired
+	private GameTimeResolver gameTimeResolver;
+
+	public GameResponse transform(Game game) {
 		return new GameResponse.Builder()
 				.withId(game.getId())
 				.withUser(game.getUser())
-				.withRows(game.getRows())
-				.withCols(game.getCols())
 				.withStatus(game.getStatus())
-				.withGameTime(game.getGameTime())
+				.withBoard(this.cellsResponseTransformer.transform(game.getBoard()))
+				.withGameTime(this.gameTimeResolver.resolve(game))
 				.withLeftFlags(game.getLeftFlags())
-				.withAffectedCells(this.cellsResponseTransformer.transform(affectedCells))
 				.build();
 	}
 }
