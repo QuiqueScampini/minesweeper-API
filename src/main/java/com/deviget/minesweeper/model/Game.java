@@ -46,6 +46,10 @@ public class Game {
 		return status;
 	}
 
+	public void setStatus(GameStatus status) {
+		this.status = status;
+	}
+
 	public int getRows() {
 		return rows;
 	}

@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.deviget.minesweeper.model.GameStatus.*;
+
 @Component
 public class RevealAction implements GameAction {
 
@@ -22,23 +24,35 @@ public class RevealAction implements GameAction {
 
 	@Override
 	public List<Cell> execute(ActionRequest actionRequest, Game game) {
+
+		if(CREATED.equals(game.getStatus()))
+			game.setStatus(IN_PROGRESS);
+
 		Cell cell = boardService.retrieveCell(actionRequest,game);
 
 		//If it's not hidden or the content is a flag then we do nothing
 		if(!cell.isHidden() || cell.getContent().equals(CellContent.FLAG))
 			return Collections.emptyList();
 
-		Integer value = cell.getValue();
-		if(value < 0 )
-			throw new RuntimeException("You Lost");
-
-		List<Cell> affectedCells = this.revealCell(cell, game);
-
-		if(boardService.allButMinesRevealed(game)) {
-			throw new RuntimeException("You Won");
+		if(cell.getValue() < 0 ) {
+			game.setStatus(LOST);
+			return this.revealAllMines(game);
 		}
 
+		List<Cell> affectedCells = this.revealCell(cell, game);
+		if(boardService.allButMinesRevealed(game))
+			game.setStatus(WON);
+
 		return affectedCells;
+	}
+
+	private List<Cell> revealAllMines(Game game) {
+		List<Cell> mines = boardService.retrieveMines(game);
+
+		for(Cell mine : mines)
+			mine.setHidden(false);
+
+		return mines;
 	}
 
 	private List<Cell> revealCell(Cell cell, Game game) {

@@ -17,12 +17,11 @@ public class CellsResponseTransformer {
 	}
 
 	public CellResponse transform(Cell cell) {
-		Integer value = cell.isHidden()? -1 : cell.getValue();
 		return new CellResponse.Builder()
 				.withRow(cell.getRow())
 				.withCol(cell.getCol())
 				.withCellContent(cell.getContent())
-				.withValue(value)
+				.withValue(cell.getValue())
 				.build();
 	}
 }
