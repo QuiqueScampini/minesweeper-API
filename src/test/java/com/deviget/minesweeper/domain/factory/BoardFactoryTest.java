@@ -4,15 +4,15 @@ import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.data.util.Pair;
 
-import java.util.Random;
-import java.util.stream.IntStream;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -20,14 +20,13 @@ class BoardFactoryTest {
 
 	private static final int COLS = 3;
 	private static final int ROWS = 3;
-	private static final int BOARD_SIZE = COLS * ROWS;
 	private static final int MINES = 3;
 
 	@InjectMocks
 	private BoardFactory factory;
 
-	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
-	private Random randomGenerator;
+	@Mock
+	private MinesPositionGenerator minesPositionsGenerator;
 
 	@Mock
 	private GameRequest request;
@@ -35,12 +34,6 @@ class BoardFactoryTest {
 	@BeforeEach
 	public void setup(){
 		openMocks(this);
-		ReflectionTestUtils.setField(factory,"randomGenerator",randomGenerator);
-		when(this.randomGenerator
-				.ints(0, BOARD_SIZE)
-				.distinct()
-				.limit(MINES)
-		).thenReturn(IntStream.of(4, 5, 8));
 	}
 
 	@Test
@@ -50,26 +43,36 @@ class BoardFactoryTest {
 		when(request.getCols()).thenReturn(COLS);
 		when(request.getMines()).thenReturn(MINES);
 
+		List<Pair<Integer, Integer>> pairs = Arrays.asList(Pair.of(1,1),Pair.of(1,2),Pair.of(2,2));
+		when(minesPositionsGenerator.generate(ROWS,COLS,MINES)).thenReturn(pairs);
+
 		//Act
-		Cell[][] cells = factory.create(request);
+		List<List<Cell>> board = factory.create(request);
 
 		//Board assertion
-		assertEquals(ROWS,cells.length);
-		assertEquals(ROWS,cells[0].length);
+		assertEquals(ROWS,board.size());
+		assertTrue(board.stream().allMatch( row -> COLS == row.size()));
 
 		//Row 0 assertion
-		assertEquals(1, cells[0][0].getValue());
-		assertEquals(2, cells[0][1].getValue());
-		assertEquals(2, cells[0][2].getValue());
+		List<Cell> row_0 = board.get(0);
+		assertCellValue(1,row_0.get(0));
+		assertCellValue(2, row_0.get(1));
+		assertCellValue(2, row_0.get(2));
 
 		//Row 1 assertion
-		assertEquals(1, cells[1][0].getValue());
-		assertEquals(-1, cells[1][1].getValue());
-		assertEquals(-1, cells[1][2].getValue());
+		List<Cell> row_1 = board.get(1);
+		assertCellValue(1, row_1.get(0));
+		assertCellValue(-1, row_1.get(1));
+		assertCellValue(-1, row_1.get(2));
 
 		//Row 2 assertion
-		assertEquals(1, cells[2][0].getValue());
-		assertEquals(3, cells[2][1].getValue());
-		assertEquals(-1, cells[2][2].getValue());
+		List<Cell> row_2 = board.get(2);
+		assertCellValue(1, row_2.get(0));
+		assertCellValue(3, row_2.get(1));
+		assertCellValue(-1, row_2.get(2));
+	}
+
+	private void assertCellValue(Integer value, Cell cell) {
+		assertEquals(value, cell.getValue());
 	}
 }
