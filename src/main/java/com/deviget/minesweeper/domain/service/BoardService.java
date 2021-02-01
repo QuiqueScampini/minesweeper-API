@@ -55,6 +55,23 @@ public class BoardService {
 		return true;
 	}
 
+	public List<Cell> retrieveHiddenMines(Game game) {
+		Cell[][] board = game.getBoard();
+		int maxRow = game.getRows();
+		int maxCol = game.getCols();
+
+		List<Cell> mines = new ArrayList<>();
+
+		for(int row = 0; row < maxRow; row ++){
+			for(int col=0; col < maxCol; col++) {
+				Cell cell = board[row][col];
+				if(cell.isHidden() && cell.getValue() < 0)
+					mines.add(cell);
+			}
+		}
+		return mines;
+	}
+
 	private boolean sameCell(int row, int col, int cellRow, int cellCol) {
 		return row == cellRow && col == cellCol;
 	}

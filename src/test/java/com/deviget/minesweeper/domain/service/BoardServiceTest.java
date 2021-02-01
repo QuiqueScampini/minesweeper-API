@@ -11,8 +11,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -91,6 +90,45 @@ class BoardServiceTest {
 		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 2 && c.getCol() == 2));
 	}
 
+	@Test
+	public void allButMinesRevealed_false() {
+		Cell mine = game.getBoard()[0][1];
+		when(mine.getValue()).thenReturn(-1);
+
+		assertFalse(service.allButMinesRevealed(game));
+	}
+
+	@Test
+	public void allButMinesRevealed_true() {
+		when(game.getBoard()[0][0].getValue()).thenReturn(-1);
+		when(game.getBoard()[0][1].getValue()).thenReturn(-1);
+		when(game.getBoard()[0][2].getValue()).thenReturn(-1);
+
+		when(game.getBoard()[1][0].isHidden()).thenReturn(false);
+		when(game.getBoard()[1][1].isHidden()).thenReturn(false);
+		when(game.getBoard()[1][2].isHidden()).thenReturn(false);
+
+		when(game.getBoard()[2][0].isHidden()).thenReturn(false);
+		when(game.getBoard()[2][1].isHidden()).thenReturn(false);
+		when(game.getBoard()[2][2].isHidden()).thenReturn(false);
+
+		assertTrue(service.allButMinesRevealed(game));
+	}
+
+	@Test
+	public void retrieveHiddenMines_1HiddenMine_1NotHiddenMine() {
+		Cell mine1 = game.getBoard()[0][0];
+		when(mine1.isHidden()).thenReturn(false);
+
+		Cell mine2 = game.getBoard()[1][2];
+		when(mine2.getValue()).thenReturn(-1);
+
+		List<Cell> hiddenMines = service.retrieveHiddenMines(game);
+
+		assertEquals(1,hiddenMines.size());
+		assertSame(mine2,hiddenMines.get(0));
+	}
+
 	private Cell[][] createBoard(int rows, int cols) {
 		Cell[][] cells = new Cell[rows][cols];
 		for(int row = 0; row< rows; row++){
@@ -98,6 +136,8 @@ class BoardServiceTest {
 				Cell cellMock = Mockito.mock(Cell.class);
 				when(cellMock.getRow()).thenReturn(row);
 				when(cellMock.getCol()).thenReturn(col);
+				when(cellMock.isHidden()).thenReturn(true);
+				when(cellMock.getValue()).thenReturn(1);
 				cells[row][col] = cellMock;
 			}
 		}

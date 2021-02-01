@@ -47,7 +47,7 @@ public class RevealAction implements GameAction {
 	}
 
 	private List<Cell> revealAllMines(Game game) {
-		List<Cell> mines = boardService.retrieveMines(game);
+		List<Cell> mines = boardService.retrieveHiddenMines(game);
 
 		for(Cell mine : mines)
 			mine.setHidden(false);
