@@ -2,19 +2,16 @@ package com.deviget.minesweeper.api.response;
 
 import com.deviget.minesweeper.model.GameStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameResponse {
 
 	private	Integer id;
 	private String user;
-	private int rows;
-	private int cols;
 	private GameStatus status;
+	private List<RowResponse> board;
 	private int gameTime;
 	private int leftFlags;
-	private List<CellResponse> affectedCells;
 
 	private GameResponse() {
 	}
@@ -27,40 +24,30 @@ public class GameResponse {
 		return user;
 	}
 
-	public int getRows() {
-		return rows;
-	}
-
-	public int getCols() {
-		return cols;
-	}
-
 	public GameStatus getStatus() {
 		return status;
 	}
 
-	public int getGameTime() {
-		return gameTime;
+	public List<RowResponse> getBoard() {
+		return board;
 	}
 
 	public int getLeftFlags() {
 		return leftFlags;
 	}
 
-	public List<CellResponse> getAffectedCells() {
-		return affectedCells;
+	public int getGameTime() {
+		return gameTime;
 	}
 
 	public static class Builder {
 
 		private	Integer id;
 		private String user;
-		private int rows;
-		private int cols;
 		private GameStatus status;
+		private List<RowResponse> board;
 		private int gameTime;
 		private int leftFlags;
-		private List<CellResponse> affectedCells = new ArrayList<>();
 
 		public Builder withId(Integer id) {
 			this.id = id;
@@ -72,23 +59,13 @@ public class GameResponse {
 			return this;
 		}
 
-		public Builder withRows(int rows) {
-			this.rows = rows;
-			return this;
-		}
-
-		public Builder withCols(int cols) {
-			this.cols = cols;
-			return this;
-		}
-
 		public Builder withStatus(GameStatus status) {
 			this.status = status;
 			return this;
 		}
 
-		public Builder withGameTime(int gameTime) {
-			this.gameTime = gameTime;
+		public Builder withBoard(List<RowResponse> board) {
+			this.board = board;
 			return this;
 		}
 
@@ -97,8 +74,8 @@ public class GameResponse {
 			return this;
 		}
 
-		public Builder withAffectedCells(List<CellResponse> affectedCells) {
-			this.affectedCells = affectedCells;
+		public Builder withGameTime(int gameTime) {
+			this.gameTime = gameTime;
 			return this;
 		}
 
@@ -106,12 +83,10 @@ public class GameResponse {
 			GameResponse gameResponse = new GameResponse();
 			gameResponse.id = this.id;
 			gameResponse.user = this.user;
-			gameResponse.rows = this.rows;
-			gameResponse.cols = this.cols;
 			gameResponse.status = this.status;
-			gameResponse.gameTime = this.gameTime;
+			gameResponse.board = this.board;
 			gameResponse.leftFlags = this.leftFlags;
-			gameResponse.affectedCells = this.affectedCells;
+			gameResponse.gameTime = this.gameTime;
 			return gameResponse;
 		}
 	}
