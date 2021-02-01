@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class FlagAction implements GameAction {
+public class FlagAction extends GameAction {
 
 	@Override
 	public List<Cell> execute(ActionRequest actionRequest, Game game) {
@@ -35,10 +35,4 @@ public class FlagAction implements GameAction {
 		return Collections.singletonList(cell);
 	}
 
-	private Cell retrieveCell(Game game, ActionRequest actionRequest) {
-		int row = actionRequest.getRow();
-		int col = actionRequest.getCol();
-		//TODO validate it exists
-		return game.getBoard()[row][col];
-	}
 }
