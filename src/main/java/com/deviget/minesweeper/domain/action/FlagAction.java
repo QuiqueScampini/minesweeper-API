@@ -1,20 +1,25 @@
 package com.deviget.minesweeper.domain.action;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
+import com.deviget.minesweeper.domain.service.BoardService;
 import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.CellContent;
 import com.deviget.minesweeper.model.Game;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
 @Component
-public class FlagAction extends GameAction {
+public class FlagAction implements GameAction {
+
+	@Autowired
+	private BoardService boardService;
 
 	@Override
 	public List<Cell> execute(ActionRequest actionRequest, Game game) {
-		Cell cell = this.retrieveCell(game, actionRequest);
+		Cell cell = boardService.retrieveCell(actionRequest, game);
 
 		if(!cell.isHidden())
 			return Collections.emptyList();
@@ -34,5 +39,4 @@ public class FlagAction extends GameAction {
 		}
 		return Collections.singletonList(cell);
 	}
-
 }
