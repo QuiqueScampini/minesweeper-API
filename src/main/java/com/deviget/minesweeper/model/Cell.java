@@ -20,22 +20,6 @@ public class Cell implements Serializable {
 		content = NONE;
 	}
 
-	public void setContent(CellContent content) {
-		this.content = content;
-	}
-
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public CellContent getContent() {
-		return content;
-	}
-
-	public Integer getValue() {
-		return value;
-	}
-
 	public int getRow() {
 		return row;
 	}
@@ -43,4 +27,25 @@ public class Cell implements Serializable {
 	public int getCol() {
 		return col;
 	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+
+	public CellContent getContent() {
+		return content;
+	}
+
+	public void setContent(CellContent content) {
+		this.content = content;
+	}
+
+	public Integer getValue() {
+		return value;
+	}
+
 }
