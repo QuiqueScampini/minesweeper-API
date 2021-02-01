@@ -78,7 +78,7 @@ public class GameResponse {
 		}
 
 		public Builder withCols(int cols) {
-			this.rows = cols;
+			this.cols = cols;
 			return this;
 		}
 
