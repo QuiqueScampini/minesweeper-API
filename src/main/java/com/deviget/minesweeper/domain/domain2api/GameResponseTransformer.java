@@ -18,6 +18,8 @@ public class GameResponseTransformer {
 		return new GameResponse.Builder()
 				.withId(game.getId())
 				.withUser(game.getUser())
+				.withRows(game.getRows())
+				.withCols(game.getCols())
 				.withStatus(game.getStatus())
 				.withGameTime(game.getGameTime())
 				.withLeftFlags(game.getLeftFlags())

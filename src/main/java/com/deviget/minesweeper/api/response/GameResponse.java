@@ -9,6 +9,8 @@ public class GameResponse {
 
 	private	Integer id;
 	private String user;
+	private int rows;
+	private int cols;
 	private GameStatus status;
 	private int gameTime;
 	private int leftFlags;
@@ -23,6 +25,14 @@ public class GameResponse {
 
 	public String getUser() {
 		return user;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public int getCols() {
+		return cols;
 	}
 
 	public GameStatus getStatus() {
@@ -45,6 +55,8 @@ public class GameResponse {
 
 		private	Integer id;
 		private String user;
+		private int rows;
+		private int cols;
 		private GameStatus status;
 		private int gameTime;
 		private int leftFlags;
@@ -57,6 +69,16 @@ public class GameResponse {
 
 		public Builder withUser(String user) {
 			this.user = user;
+			return this;
+		}
+
+		public Builder withRows(int rows) {
+			this.rows = rows;
+			return this;
+		}
+
+		public Builder withCols(int cols) {
+			this.rows = cols;
 			return this;
 		}
 
@@ -84,6 +106,8 @@ public class GameResponse {
 			GameResponse gameResponse = new GameResponse();
 			gameResponse.id = this.id;
 			gameResponse.user = this.user;
+			gameResponse.rows = this.rows;
+			gameResponse.cols = this.cols;
 			gameResponse.status = this.status;
 			gameResponse.gameTime = this.gameTime;
 			gameResponse.leftFlags = this.leftFlags;
