@@ -34,6 +34,8 @@ class BoardServiceTest {
 		openMocks(this);
 		board = this.createBoard(3, 3);
 		when(game.getBoard()).thenReturn(board);
+		when(game.getRows()).thenReturn(3);
+		when(game.getCols()).thenReturn(3);
 	}
 
 	@Test

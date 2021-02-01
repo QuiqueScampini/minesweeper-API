@@ -19,8 +19,10 @@ public class BoardService {
 
 	public List<Cell> retrieveAdjacent(Cell cell, Game game) {
 		Cell[][] board = game.getBoard();
-		int maxRow = board.length;
-		int maxCol = board[0].length;
+
+		int maxRow = game.getRows();
+		int maxCol = game.getCols();
+
 		int cellRow = cell.getRow();
 		int cellCol = cell.getCol();
 
@@ -37,6 +39,22 @@ public class BoardService {
 		return adjacent;
 	}
 
+	public boolean allButMinesRevealed(Game game) {
+		Cell[][] board = game.getBoard();
+		int maxRow = game.getRows();
+		int maxCol = game.getCols();
+
+		Cell cell;
+		for(int row = 0; row < maxRow; row ++){
+			for(int col=0; col < maxCol; col++) {
+				cell = board[row][col];
+				if(cell.getValue() >= 0 && cell.isHidden())
+					return false;
+			}
+		}
+		return true;
+	}
+
 	private boolean sameCell(int row, int col, int cellRow, int cellCol) {
 		return row == cellRow && col == cellCol;
 	}
@@ -48,5 +66,4 @@ public class BoardService {
 	private boolean validRow(int maxRow, int row) {
 		return row >= 0 && row < maxRow;
 	}
-
 }
