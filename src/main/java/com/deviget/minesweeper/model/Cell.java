@@ -8,7 +8,6 @@ public class Cell implements Serializable {
 
 	private final int row;
 	private final int col;
-	private boolean hidden;
 	private CellContent content;
 	private final Integer value;
 
@@ -16,8 +15,7 @@ public class Cell implements Serializable {
 		this.row = row;
 		this.col = col;
 		this.value = value;
-		hidden = true;
-		content = NONE;
+		this.content = NONE;
 	}
 
 	public int getRow() {
@@ -26,14 +24,6 @@ public class Cell implements Serializable {
 
 	public int getCol() {
 		return col;
-	}
-
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
 	}
 
 	public CellContent getContent() {

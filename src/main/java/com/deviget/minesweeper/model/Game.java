@@ -1,7 +1,7 @@
 package com.deviget.minesweeper.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.deviget.minesweeper.model.GameStatus.CREATED;
 
@@ -13,25 +13,20 @@ public class Game {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String user;
-
-	private int rows;
-
-	private int cols;
+	private final String user;
 
 	private GameStatus status;
 
 	@Lob
-	private Cell[][] board;
+	private final List<List<Cell>> board;
 
 	private int leftFlags;
 
-	private LocalDateTime resumedDate;
-
-	private int gameTime;
-
-
-	private Game() {
+	public Game(String user, List<List<Cell>> board, int leftFlags) {
+		this.user = user;
+		this.status = CREATED;
+		this.board = board;
+		this.leftFlags = leftFlags;
 	}
 
 	public Integer getId() {
@@ -42,28 +37,16 @@ public class Game {
 		return user;
 	}
 
-	public GameStatus getStatus() {
-		return status;
-	}
-
 	public void setStatus(GameStatus status) {
 		this.status = status;
 	}
 
-	public int getRows() {
-		return rows;
+	public GameStatus getStatus() {
+		return status;
 	}
 
-	public int getCols() {
-		return cols;
-	}
-
-	public Cell[][] getBoard() {
+	public List<List<Cell>> getBoard() {
 		return board;
-	}
-
-	public int getGameTime() {
-		return gameTime;
 	}
 
 	public void setLeftFlags(int leftFlags) {
@@ -72,49 +55,5 @@ public class Game {
 
 	public int getLeftFlags() {
 		return leftFlags;
-	}
-
-	public static class Builder {
-
-		private String user;
-		private int rows;
-		private int cols;
-		private Cell[][] board;
-		private int leftFlags;
-
-		public Builder withUser(String user) {
-			this.user = user;
-			return this;
-		}
-
-		public Builder withRows(int rows) {
-			this.rows = rows;
-			return this;
-		}
-
-		public Builder withCols(int cols) {
-			this.cols = cols;
-			return this;
-		}
-		public Builder withBoard(Cell[][] board) {
-			this.board = board;
-			return this;
-		}
-
-		public Builder withLeftFlags(int leftFlags) {
-			this.leftFlags = leftFlags;
-			return this;
-		}
-
-		public Game build(){
-			Game game = new Game();
-			game.status = CREATED;
-			game.user = this.user;
-			game.rows = this.rows;
-			game.cols = this.cols;
-			game.board = this.board;
-			game.leftFlags = leftFlags;
-			return game;
-		}
 	}
 }
