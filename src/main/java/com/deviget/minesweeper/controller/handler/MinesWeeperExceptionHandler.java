@@ -2,6 +2,7 @@ package com.deviget.minesweeper.controller.handler;
 
 import com.deviget.minesweeper.api.response.ErrorResponse;
 import com.deviget.minesweeper.controller.exception.RequestValidationException;
+import com.deviget.minesweeper.domain.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,5 +18,11 @@ public class MinesWeeperExceptionHandler extends ResponseEntityExceptionHandler 
 	protected ResponseEntity<Object> handleRequestValidationException(RequestValidationException ex, WebRequest request) {
 		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
 		return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+
+	@ExceptionHandler(value={NotFoundException.class })
+	protected ResponseEntity<Object> handleGameNotFoundException(NotFoundException ex, WebRequest request) {
+		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+		return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 }

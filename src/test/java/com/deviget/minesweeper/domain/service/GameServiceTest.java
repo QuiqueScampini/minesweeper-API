@@ -6,6 +6,7 @@ import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.domain.action.FlagAction;
 import com.deviget.minesweeper.domain.action.RevealAction;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
+import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.GameFactory;
 import com.deviget.minesweeper.model.Game;
 import com.deviget.minesweeper.repository.GameRepository;
@@ -108,7 +109,7 @@ class GameServiceTest {
 	void executeAction_ID_NotFound() {
 		when(gameRepository.findById(ID)).thenReturn(Optional.empty());
 
-		assertThrows(RuntimeException.class, () -> service.executeAction(ID, actionRequest));
+		assertThrows(NotFoundException.class, () -> service.executeAction(ID, actionRequest));
 
 		verify(gameRepository,never()).save(game);
 		verify(gameResponseTransformer,never()).transform(same(game),anyList());

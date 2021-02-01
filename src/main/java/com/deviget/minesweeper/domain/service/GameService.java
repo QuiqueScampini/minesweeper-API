@@ -8,6 +8,7 @@ import com.deviget.minesweeper.domain.action.FlagAction;
 import com.deviget.minesweeper.domain.action.GameAction;
 import com.deviget.minesweeper.domain.action.RevealAction;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
+import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.GameFactory;
 import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.Game;
@@ -61,8 +62,7 @@ public class GameService {
 	}
 
 	private Game findGame(int id) {
-		//TODO Map to 404
-		return gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Not Found"));
+		return gameRepository.findById(id).orElseThrow(() -> new NotFoundException("Game with Id: " + id + " not found"));
 	}
 
 }
