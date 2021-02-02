@@ -1,6 +1,5 @@
 package com.deviget.minesweeper.controller.validator;
 
-import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.controller.exception.RequestValidationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,9 +46,5 @@ public class RequestValidator {
 
 		if(mines >= cols * rows)
 			throw new RequestValidationException("Can't create game: There are more mines than cells");
-	}
-
-	public void validateRequest(ActionRequest actionRequest) {
-		//TODO Validate
 	}
 }

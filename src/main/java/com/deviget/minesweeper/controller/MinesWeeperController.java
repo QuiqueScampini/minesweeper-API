@@ -51,8 +51,8 @@ public class MinesWeeperController {
 
 	@ResponseBody
 	@PutMapping("/game/{id}")
-	public GameResponse executeAction(@RequestBody ActionRequest actionRequest, @PathVariable(value = "id") int id) {
-		requestValidator.validateRequest(actionRequest);
+	public GameResponse executeAction(@RequestBody ActionRequest actionRequest,
+									  @PathVariable(value = "id") int id) {
 		return this.gameService.executeAction(id,actionRequest);
 	}
 }
