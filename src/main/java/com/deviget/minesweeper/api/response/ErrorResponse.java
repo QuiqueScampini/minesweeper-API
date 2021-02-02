@@ -14,11 +14,6 @@ public class ErrorResponse {
 		this.timestamp =  LocalDateTime.now();
 	}
 
-	public ErrorResponse(HttpStatus status) {
-		this();
-		this.status = status;
-	}
-
 	public ErrorResponse(HttpStatus status, Throwable ex) {
 		this();
 		this.status = status;

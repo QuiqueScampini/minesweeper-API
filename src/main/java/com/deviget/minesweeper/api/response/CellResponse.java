@@ -1,9 +1,11 @@
 package com.deviget.minesweeper.api.response;
 
 import com.deviget.minesweeper.model.CellContent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import static com.deviget.minesweeper.model.CellContent.REVEALED;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CellResponse {
 
 	private Integer value;
