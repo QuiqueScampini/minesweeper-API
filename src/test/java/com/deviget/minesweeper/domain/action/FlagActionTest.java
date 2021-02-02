@@ -9,11 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.List;
-
 import static com.deviget.minesweeper.model.CellContent.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -42,49 +38,46 @@ class FlagActionTest {
 	void setUp() {
 		openMocks(this);
 		when(boardService.retrieveCell(actionRequest,game)).thenReturn(cell);
-		when(cell.isHidden()).thenReturn(true);
 		when(game.getLeftFlags()).thenReturn(LEFT_FLAGS);
 	}
 
 	@Test
-	void execute_notHiddenCell_returnsEmptyList() {
-		when(cell.isHidden()).thenReturn(false);
-
-		List<Cell> affectedCells = action.execute(actionRequest, game);
-
-		assertEquals(0,affectedCells.size());
-	}
-
-	@Test
-	void execute_hiddenWithNoneContent_returnsCell() {
+	void execute_hiddenWithNoneContent_setFlagContentSubtractFlag() {
 		when(cell.getContent()).thenReturn(NONE);
 
-		List<Cell> affectedCells = action.execute(actionRequest, game);
+		action.execute(actionRequest, game);
 
-		assertSame(cell,affectedCells.get(0));
 		verify(cell).setContent(FLAG);
 		verify(game).setLeftFlags(MINUS_1_LEFT_FLAGS);
 	}
 
 	@Test
-	void execute_hiddenWithFlagContent_returnsCell() {
+	void execute_hiddenWithFlagContent_setQuestionContentAddFlag() {
 		when(cell.getContent()).thenReturn(FLAG);
 
-		List<Cell> affectedCells = action.execute(actionRequest, game);
+		action.execute(actionRequest, game);
 
-		assertSame(cell,affectedCells.get(0));
 		verify(cell).setContent(QUESTION);
 		verify(game).setLeftFlags(PLUS_1_LEFT_FLAGS);
 	}
 
 	@Test
-	void execute_hiddenWithQUESTIONContent_returnsCell() {
+	void execute_hiddenWithQUESTIONContent_setNoneContent() {
 		when(cell.getContent()).thenReturn(QUESTION);
 
-		List<Cell> affectedCells = action.execute(actionRequest, game);
+		action.execute(actionRequest, game);
 
-		assertSame(cell,affectedCells.get(0));
 		verify(cell).setContent(NONE);
+		verify(game,never()).setLeftFlags(anyInt());
+	}
+
+	@Test
+	void execute_REVEALEDCell_doNothing() {
+		when(cell.getContent()).thenReturn(REVEALED);
+
+		action.execute(actionRequest, game);
+
+		verify(cell,never()).setContent(any());
 		verify(game,never()).setLeftFlags(anyInt());
 	}
 }
