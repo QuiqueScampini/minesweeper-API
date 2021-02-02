@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.domain.service;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
+import com.deviget.minesweeper.domain.factory.BoardFactory;
 import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.Game;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,16 +10,26 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.deviget.minesweeper.model.CellContent.REVEALED;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 class BoardServiceTest {
 
+	private static final int ROWS = 3;
+	private static final int COLS = 3;
+	private static final int MINES = 2;
+
 	@InjectMocks
 	private BoardService service;
+
+	@Mock
+	private BoardFactory boardFactory;
 
 	@Mock
 	private ActionRequest actionRequest;
@@ -26,15 +37,19 @@ class BoardServiceTest {
 	@Mock
 	private Game game;
 
-	private Cell[][] board;
+	private List<List<Cell>> board;
 
 	@BeforeEach
 	void setUp() {
 		openMocks(this);
-		board = this.createBoard(3, 3);
+		board = this.mockBoard();
 		when(game.getBoard()).thenReturn(board);
-		when(game.getRows()).thenReturn(3);
-		when(game.getCols()).thenReturn(3);
+	}
+
+	@Test
+	void createBoard() {
+		service.createBoard(ROWS, COLS, MINES);
+		verify(boardFactory).create(ROWS,COLS,MINES);
 	}
 
 	@Test
@@ -50,49 +65,49 @@ class BoardServiceTest {
 
 	@Test
 	void retrieveAdjacent_extremeCell() {
-		Cell cell = game.getBoard()[0][0];
+		Cell cell = board.get(0).get(0);
 
 		List<Cell> cells = service.retrieveAdjacent(cell, game);
 
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 0 && c.getCol() == 1));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 1 && c.getCol() == 0));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 1 && c.getCol() == 1));
+		assertContainingCell(cells, 0, 1);
+		assertContainingCell(cells, 1, 0);
+		assertContainingCell(cells, 1, 1);
 	}
 
 	@Test
 	void retrieveAdjacent_borderCell() {
-		Cell cell = game.getBoard()[1][2];
+		Cell cell = board.get(1).get(2);
 
 		List<Cell> cells = service.retrieveAdjacent(cell, game);
 
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 0 && c.getCol() == 1));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 0 && c.getCol() == 2));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 1 && c.getCol() == 1));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 2 && c.getCol() == 1));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 2 && c.getCol() == 2));
+		assertContainingCell(cells, 0, 1);
+		assertContainingCell(cells, 0, 2);
+		assertContainingCell(cells, 1, 1);
+		assertContainingCell(cells, 2, 1);
+		assertContainingCell(cells, 2, 2);
 	}
 
 	@Test
 	void retrieveAdjacent_InnerCell() {
-		Cell cell = game.getBoard()[1][1];
+		Cell cell = board.get(1).get(1);
 
 		List<Cell> cells = service.retrieveAdjacent(cell, game);
 
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 0 && c.getCol() == 0));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 0 && c.getCol() == 1));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 0 && c.getCol() == 2));
+		assertContainingCell(cells, 0, 0);
+		assertContainingCell(cells, 0, 1);
+		assertContainingCell(cells, 0, 2);
 
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 1 && c.getCol() == 0));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 1 && c.getCol() == 2));
+		assertContainingCell(cells, 1, 0);
+		assertContainingCell(cells, 1, 2);
 
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 2 && c.getCol() == 0));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 2 && c.getCol() == 1));
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == 2 && c.getCol() == 2));
+		assertContainingCell(cells, 2, 0);
+		assertContainingCell(cells, 2, 1);
+		assertContainingCell(cells, 2, 2);
 	}
 
 	@Test
 	public void allButMinesRevealed_false() {
-		Cell mine = game.getBoard()[0][1];
+		Cell mine = board.get(0).get(1);
 		when(mine.getValue()).thenReturn(-1);
 
 		assertFalse(service.allButMinesRevealed(game));
@@ -100,45 +115,57 @@ class BoardServiceTest {
 
 	@Test
 	public void allButMinesRevealed_true() {
-		when(game.getBoard()[0][0].getValue()).thenReturn(-1);
-		when(game.getBoard()[0][1].getValue()).thenReturn(-1);
-		when(game.getBoard()[0][2].getValue()).thenReturn(-1);
+		convertToMine(0,0);
+		convertToMine(0,1);
+		convertToMine(0,2);
+		
+		revealCell(1,0);
+		revealCell(1,1);
+		revealCell(1,2);
 
-		when(game.getBoard()[1][0].isHidden()).thenReturn(false);
-		when(game.getBoard()[1][1].isHidden()).thenReturn(false);
-		when(game.getBoard()[1][2].isHidden()).thenReturn(false);
-
-		when(game.getBoard()[2][0].isHidden()).thenReturn(false);
-		when(game.getBoard()[2][1].isHidden()).thenReturn(false);
-		when(game.getBoard()[2][2].isHidden()).thenReturn(false);
+		revealCell(2,0);
+		revealCell(2,1);
+		revealCell(2,2);
 
 		assertTrue(service.allButMinesRevealed(game));
 	}
 
 	@Test
-	public void retrieveHiddenMines_1HiddenMine_1NotHiddenMine() {
-		Cell mine1 = game.getBoard()[0][0];
-		when(mine1.isHidden()).thenReturn(false);
+	public void retrieveMines_1HiddenMine_1NotHiddenMine() {
+		convertToMine(0,0);
+		convertToMine(1,2);
 
-		Cell mine2 = game.getBoard()[1][2];
-		when(mine2.getValue()).thenReturn(-1);
+		Cell mine = board.get(1).get(2);
 
-		List<Cell> hiddenMines = service.retrieveHiddenMines(game);
+		List<Cell> hiddenMines = service.retrieveMines(game);
 
-		assertEquals(1,hiddenMines.size());
-		assertSame(mine2,hiddenMines.get(0));
+		assertContainingCell(hiddenMines,0,0);
+		assertContainingCell(hiddenMines,1,2);
 	}
 
-	private Cell[][] createBoard(int rows, int cols) {
-		Cell[][] cells = new Cell[rows][cols];
-		for(int row = 0; row< rows; row++){
-			for(int col = 0; col< cols; col++){
+	private void assertContainingCell(List<Cell> cells, int row, int col) {
+		assertTrue(cells.stream().anyMatch(c -> c.getRow() == row && c.getCol() == col));
+	}
+
+	private void revealCell(int row, int col) {
+		when(board.get(row).get(col).getContent()).thenReturn(REVEALED);
+	}
+
+	private void convertToMine(int row, int col) {
+		when(board.get(row).get(col).getValue()).thenReturn(-1);
+	}
+
+	private List<List<Cell>> mockBoard() {
+		List<List<Cell>> cells = new ArrayList<>();
+		for(int row = 0; row< ROWS; row++){
+			List<Cell> actualRow = new ArrayList<>();
+			cells.add(actualRow);
+			for(int col = 0; col< COLS; col++){
 				Cell cellMock = Mockito.mock(Cell.class);
 				when(cellMock.getRow()).thenReturn(row);
 				when(cellMock.getCol()).thenReturn(col);
-				when(cellMock.isHidden()).thenReturn(true);
 				when(cellMock.getValue()).thenReturn(1);
-				cells[row][col] = cellMock;
+				actualRow.add(cellMock);
 			}
 		}
 		return cells;
