@@ -37,7 +37,7 @@ public class BoardService {
 
 		int colsNumber = board.get(row).size();
 		if(col < 0 || col >= colsNumber)
-			throw new RequestValidationException("Invalid Col "+ row);
+			throw new RequestValidationException("Invalid Col "+ col);
 	}
 
 	public boolean isMine(Cell cell){
