@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.domain.factory;
 
 import com.deviget.minesweeper.api.request.GameRequest;
+import com.deviget.minesweeper.domain.service.BoardService;
 import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.Game;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,8 @@ import static org.mockito.MockitoAnnotations.openMocks;
 class GameFactoryTest {
 
 	private static final String USER = "Quique";
+	private static final int ROWS = 3;
+	private static final int COLS = 3;
 	private static final int MINES = 2;
 	private static final List<List<Cell>> BOARD = Collections.emptyList();
 
@@ -27,7 +30,7 @@ class GameFactoryTest {
 	private GameFactory factory;
 
 	@Mock
-	private BoardFactory boardFactory;
+	private BoardService boardService;
 
 	@Mock
 	private GameRequest gameRequest;
@@ -36,9 +39,11 @@ class GameFactoryTest {
 	void setUp() {
 		openMocks(this);
 		when(gameRequest.getUser()).thenReturn(USER);
+		when(gameRequest.getRows()).thenReturn(ROWS);
+		when(gameRequest.getCols()).thenReturn(COLS);
 		when(gameRequest.getMines()).thenReturn(MINES);
 
-		when(boardFactory.create(gameRequest)).thenReturn(BOARD);
+		when(boardService.createBoard(ROWS,COLS,MINES)).thenReturn(BOARD);
 	}
 
 	@Test

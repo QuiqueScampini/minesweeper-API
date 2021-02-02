@@ -1,6 +1,5 @@
 package com.deviget.minesweeper.domain.factory;
 
-import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.model.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -20,11 +19,7 @@ public class BoardFactory {
 	@Autowired
 	private MinesPositionGenerator minesPositionsGenerator;
 
-	public List<List<Cell>> create(GameRequest gameRequest) {
-		int rows = gameRequest.getRows();
-		int cols = gameRequest.getCols();
-		int mines = gameRequest.getMines();
-
+	public List<List<Cell>> create(int rows, int cols, int mines) {
 		List<Pair<Integer, Integer>> minesPositions = this.minesPositionsGenerator.generate(rows,cols,mines);
 
 		return IntStream.range(0, rows)

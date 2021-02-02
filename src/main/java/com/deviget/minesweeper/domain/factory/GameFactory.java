@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.domain.factory;
 
 import com.deviget.minesweeper.api.request.GameRequest;
+import com.deviget.minesweeper.domain.service.BoardService;
 import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,14 @@ import java.util.List;
 public class GameFactory {
 
 	@Autowired
-	private BoardFactory boardFactory;
+	private BoardService boardFactory;
 
 	public Game create(GameRequest gameRequest) {
 		String user = gameRequest.getUser();
-		List<List<Cell>> board = boardFactory.create(gameRequest);
+		int rows = gameRequest.getRows();
+		int cols = gameRequest.getCols();
 		int mines = gameRequest.getMines();
+		List<List<Cell>> board = boardFactory.createBoard(rows,cols,mines);
 
 		return new Game(user, board, mines);
 	}

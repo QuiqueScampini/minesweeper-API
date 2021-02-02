@@ -28,9 +28,6 @@ class BoardFactoryTest {
 	@Mock
 	private MinesPositionGenerator minesPositionsGenerator;
 
-	@Mock
-	private GameRequest request;
-
 	@BeforeEach
 	public void setup(){
 		openMocks(this);
@@ -39,15 +36,11 @@ class BoardFactoryTest {
 	@Test
 	public void create() {
 		//Arrange
-		when(request.getRows()).thenReturn(ROWS);
-		when(request.getCols()).thenReturn(COLS);
-		when(request.getMines()).thenReturn(MINES);
-
 		List<Pair<Integer, Integer>> pairs = Arrays.asList(Pair.of(1,1),Pair.of(1,2),Pair.of(2,2));
 		when(minesPositionsGenerator.generate(ROWS,COLS,MINES)).thenReturn(pairs);
 
 		//Act
-		List<List<Cell>> board = factory.create(request);
+		List<List<Cell>> board = factory.create(COLS,COLS,MINES);
 
 		//Board assertion
 		assertEquals(ROWS,board.size());
