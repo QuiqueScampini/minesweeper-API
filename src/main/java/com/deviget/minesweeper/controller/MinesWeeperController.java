@@ -31,6 +31,12 @@ public class MinesWeeperController {
 	}
 
 	@ResponseBody
+	@GetMapping("/game/{id}")
+	public GameResponse retrieveGame(@PathVariable(value = "id") int id){
+		return this. gameService.retrieveGame(id);
+	}
+
+	@ResponseBody
 	@PatchMapping("/game/{id}")
 	public GameResponse pauseGame(@PathVariable(value = "id") int id) {
 		return this.gameService.pauseGame(id);
@@ -42,6 +48,4 @@ public class MinesWeeperController {
 		requestValidator.validateRequest(actionRequest);
 		return this.gameService.executeAction(id,actionRequest);
 	}
-
-
 }

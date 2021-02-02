@@ -94,6 +94,13 @@ class GameServiceTest {
 	}
 
 	@Test
+	void retrieveGame(){
+		GameResponse actualGameResponse = service.retrieveGame(ID);
+		assertSame(gameResponse,actualGameResponse);
+		verify(gameRepository).save(game);
+	}
+
+	@Test
 	void executeAction_FLAG() {
 		when(actionRequest.getAction()).thenReturn(FLAG);
 
@@ -126,5 +133,4 @@ class GameServiceTest {
 		verify(flagAction,never()).execute(actionRequest,game);
 		verify(revealAction,never()).execute(actionRequest,game);
 	}
-
 }

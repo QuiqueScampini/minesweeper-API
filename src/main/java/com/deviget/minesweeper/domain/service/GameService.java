@@ -52,6 +52,11 @@ public class GameService {
 		return this.saveAndGenerateResponse(game);
 	}
 
+	public GameResponse retrieveGame(int id) {
+		Game game = this.findGame(id);
+		return this.saveAndGenerateResponse(game);
+	}
+
 	public GameResponse executeAction(int id, ActionRequest actionRequest) {
 		Game game = this.findGame(id);
 		GameAction action = actionsMap.get(actionRequest.getAction());
