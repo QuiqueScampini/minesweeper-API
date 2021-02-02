@@ -69,7 +69,7 @@ class GameServiceTest {
 		setField(service,"gameRepository",gameRepository);
 		setField(service,"gameResponseTransformer",gameResponseTransformer);
 
-		when(gameResponseTransformer.transform(same(game),anyList())).thenReturn(gameResponse);
+		when(gameResponseTransformer.transform(game)).thenReturn(gameResponse);
 		when(gameRepository.findById(ID)).thenReturn(Optional.of(game));
 	}
 
@@ -112,7 +112,7 @@ class GameServiceTest {
 		assertThrows(NotFoundException.class, () -> service.executeAction(ID, actionRequest));
 
 		verify(gameRepository,never()).save(game);
-		verify(gameResponseTransformer,never()).transform(same(game),anyList());
+		verify(gameResponseTransformer,never()).transform(game);
 		verify(flagAction,never()).execute(actionRequest,game);
 		verify(revealAction,never()).execute(actionRequest,game);
 	}

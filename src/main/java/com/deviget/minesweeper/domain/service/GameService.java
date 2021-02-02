@@ -45,24 +45,24 @@ public class GameService {
 
 	public GameResponse createGame(GameRequest gameRequest) {
 		Game game = gameFactory.create(gameRequest);
-		return this.saveAndGenerateResponse(game, Collections.emptyList());
+		return this.saveAndGenerateResponse(game);
 	}
 
 	public GameResponse executeAction(int id, ActionRequest actionRequest) {
 		Game game = this.findGame(id);
 		GameAction action = actionsMap.get(actionRequest.getAction());
-		List<Cell> affectedCells = action.execute(actionRequest, game);
+		action.execute(actionRequest, game);
 
-		return this.saveAndGenerateResponse(game,affectedCells);
+		return this.saveAndGenerateResponse(game);
 	}
 
-	private GameResponse saveAndGenerateResponse(Game game,List<Cell> affectedCells) {
+	private GameResponse saveAndGenerateResponse(Game game) {
 		gameRepository.save(game);
-		return gameResponseTransformer.transform(game,affectedCells);
+		return gameResponseTransformer.transform(game);
 	}
 
 	private Game findGame(int id) {
-		return gameRepository.findById(id).orElseThrow(() -> new NotFoundException("Game with Id: " + id + " not found"));
+		return gameRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Game with Id: " + id + " not found"));
 	}
-
 }
