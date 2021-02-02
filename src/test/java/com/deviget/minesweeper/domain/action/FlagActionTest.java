@@ -37,7 +37,7 @@ class FlagActionTest {
 	@BeforeEach
 	void setUp() {
 		openMocks(this);
-		when(boardService.retrieveCell(actionRequest,game)).thenReturn(cell);
+		when(boardService.retrieveCell(same(actionRequest),any())).thenReturn(cell);
 		when(game.getLeftFlags()).thenReturn(LEFT_FLAGS);
 	}
 

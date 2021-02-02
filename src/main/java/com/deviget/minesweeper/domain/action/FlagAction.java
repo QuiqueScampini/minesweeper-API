@@ -17,7 +17,7 @@ public class FlagAction implements GameAction {
 
 	@Override
 	public void execute(ActionRequest actionRequest, Game game) {
-		Cell cell = boardService.retrieveCell(actionRequest, game);
+		Cell cell = boardService.retrieveCell(actionRequest, game.getBoard());
 
 		switch (cell.getContent()) {
 			case NONE:

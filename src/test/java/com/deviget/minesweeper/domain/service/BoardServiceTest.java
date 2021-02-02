@@ -3,7 +3,6 @@ package com.deviget.minesweeper.domain.service;
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.domain.factory.BoardFactory;
 import com.deviget.minesweeper.model.Cell;
-import com.deviget.minesweeper.model.Game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,16 +33,12 @@ class BoardServiceTest {
 	@Mock
 	private ActionRequest actionRequest;
 
-	@Mock
-	private Game game;
-
 	private List<List<Cell>> board;
 
 	@BeforeEach
 	void setUp() {
 		openMocks(this);
 		board = this.mockBoard();
-		when(game.getBoard()).thenReturn(board);
 	}
 
 	@Test
@@ -57,7 +52,7 @@ class BoardServiceTest {
 		when(actionRequest.getRow()).thenReturn(2);
 		when(actionRequest.getCol()).thenReturn(1);
 
-		Cell cell = service.retrieveCell(actionRequest, game);
+		Cell cell = service.retrieveCell(actionRequest,board);
 
 		assertEquals(2,cell.getRow());
 		assertEquals(1,cell.getCol());
@@ -67,7 +62,7 @@ class BoardServiceTest {
 	void retrieveAdjacent_extremeCell() {
 		Cell cell = board.get(0).get(0);
 
-		List<Cell> cells = service.retrieveAdjacent(cell, game);
+		List<Cell> cells = service.retrieveAdjacent(cell, board);
 
 		assertContainingCell(cells, 0, 1);
 		assertContainingCell(cells, 1, 0);
@@ -78,7 +73,7 @@ class BoardServiceTest {
 	void retrieveAdjacent_borderCell() {
 		Cell cell = board.get(1).get(2);
 
-		List<Cell> cells = service.retrieveAdjacent(cell, game);
+		List<Cell> cells = service.retrieveAdjacent(cell, board);
 
 		assertContainingCell(cells, 0, 1);
 		assertContainingCell(cells, 0, 2);
@@ -91,7 +86,7 @@ class BoardServiceTest {
 	void retrieveAdjacent_InnerCell() {
 		Cell cell = board.get(1).get(1);
 
-		List<Cell> cells = service.retrieveAdjacent(cell, game);
+		List<Cell> cells = service.retrieveAdjacent(cell, board);
 
 		assertContainingCell(cells, 0, 0);
 		assertContainingCell(cells, 0, 1);
@@ -110,7 +105,7 @@ class BoardServiceTest {
 		Cell mine = board.get(0).get(1);
 		when(mine.getValue()).thenReturn(-1);
 
-		assertFalse(service.allButMinesRevealed(game));
+		assertFalse(service.allButMinesRevealed(board));
 	}
 
 	@Test
@@ -127,7 +122,7 @@ class BoardServiceTest {
 		revealCell(2,1);
 		revealCell(2,2);
 
-		assertTrue(service.allButMinesRevealed(game));
+		assertTrue(service.allButMinesRevealed(board));
 	}
 
 	@Test
@@ -135,7 +130,7 @@ class BoardServiceTest {
 		convertToMine(0,0);
 		convertToMine(1,2);
 
-		List<Cell> hiddenMines = service.retrieveMines(game);
+		List<Cell> hiddenMines = service.retrieveMines(board);
 
 		assertContainingCell(hiddenMines,0,0);
 		assertContainingCell(hiddenMines,1,2);

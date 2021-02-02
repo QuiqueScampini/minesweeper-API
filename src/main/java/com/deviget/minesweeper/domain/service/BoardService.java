@@ -3,7 +3,6 @@ package com.deviget.minesweeper.domain.service;
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.domain.factory.BoardFactory;
 import com.deviget.minesweeper.model.Cell;
-import com.deviget.minesweeper.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,14 +24,11 @@ public class BoardService {
 		return boardFactory.create(rows,cols,mines);
 	}
 
-	public Cell retrieveCell(ActionRequest actionRequest, Game game) {
-		return game.getBoard()
-				.get(actionRequest.getRow())
-				.get(actionRequest.getCol());
+	public Cell retrieveCell(ActionRequest actionRequest, List<List<Cell>> board) {
+		return board.get(actionRequest.getRow()).get(actionRequest.getCol());
 	}
 
-	public List<Cell> retrieveAdjacent(Cell cell, Game game) {
-		List<List<Cell>> board = game.getBoard();
+	public List<Cell> retrieveAdjacent(Cell cell, List<List<Cell>> board) {
 
 		int maxRow = board.size();
 		int maxCol = board.get(0).size();
@@ -53,8 +49,8 @@ public class BoardService {
 		return adjacent;
 	}
 
-	public boolean allButMinesRevealed(Game game) {
-		return game.getBoard().stream()
+	public boolean allButMinesRevealed(List<List<Cell>> board) {
+		return board.stream()
 				.allMatch( row ->
 					row.stream().allMatch( cell ->
 							REVEALED.equals(cell.getContent()) ||
@@ -62,14 +58,18 @@ public class BoardService {
 				));
 	}
 
-	public List<Cell> retrieveMines(Game game) {
-		return game.getBoard().stream()
+	public List<Cell> retrieveMines(List<List<Cell>> board) {
+		return board.stream()
 				.flatMap( row -> row.stream().filter(this::isMine))
 				.collect(Collectors.toList());
 	}
 
 	public boolean isMine(Cell cell){
 		return cell.getValue().equals(MINE_VALUE);
+	}
+
+	public void revealCells(List<Cell> cells, List<List<Cell>> board) {
+
 	}
 
 	private boolean sameCell(int row, int col, int cellRow, int cellCol) {
