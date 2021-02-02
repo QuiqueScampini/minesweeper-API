@@ -26,7 +26,7 @@ class CellsResponseTransformer {
 		return new RowResponse(collect);
 	}
 
-	public CellResponse transformCell(Cell cell) {
+	private CellResponse transformCell(Cell cell) {
 		if(REVEALED.equals(cell.getContent()))
 			return new CellResponse(cell.getValue());
 

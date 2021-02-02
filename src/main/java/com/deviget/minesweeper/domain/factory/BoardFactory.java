@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.deviget.minesweeper.model.CellContent.NONE;
+
 @Component
 public class BoardFactory {
 
@@ -41,7 +43,7 @@ public class BoardFactory {
 	private Cell createCell(Integer row, Integer col, List<Pair<Integer, Integer>>  minesPositions) {
 		boolean isMine = this.isMine(row, col, minesPositions);
 		Integer value = isMine? MINE_VALUE : this.calculateValue(row, col, minesPositions);
-		return new Cell(row, col,value);
+		return new Cell(row, col,value,NONE);
 	}
 
 	private boolean isMine(int row, int col, List<Pair<Integer, Integer>> minesPositions) {
