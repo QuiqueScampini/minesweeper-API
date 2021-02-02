@@ -68,7 +68,7 @@ public class BoardService {
 				.collect(Collectors.toList());
 	}
 
-	private boolean isMine(Cell cell){
+	public boolean isMine(Cell cell){
 		return cell.getValue().equals(MINE_VALUE);
 	}
 

@@ -131,16 +131,29 @@ class BoardServiceTest {
 	}
 
 	@Test
-	public void retrieveMines_1HiddenMine_1NotHiddenMine() {
+	public void retrieveMines() {
 		convertToMine(0,0);
 		convertToMine(1,2);
-
-		Cell mine = board.get(1).get(2);
 
 		List<Cell> hiddenMines = service.retrieveMines(game);
 
 		assertContainingCell(hiddenMines,0,0);
 		assertContainingCell(hiddenMines,1,2);
+	}
+
+	@Test
+	public void isMine_true(){
+		convertToMine(1,2);
+		Cell mine = board.get(1).get(2);
+
+		assertTrue(service.isMine(mine));
+	}
+
+	@Test
+	public void isMine_false(){
+		Cell cell = board.get(1).get(2);
+
+		assertFalse(service.isMine(cell));
 	}
 
 	private void assertContainingCell(List<Cell> cells, int row, int col) {
