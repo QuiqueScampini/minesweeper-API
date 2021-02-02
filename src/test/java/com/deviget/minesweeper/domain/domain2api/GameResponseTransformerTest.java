@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.domain.domain2api;
 
 import com.deviget.minesweeper.api.response.GameResponse;
+import com.deviget.minesweeper.api.response.GamesResponse;
 import com.deviget.minesweeper.api.response.RowResponse;
 import com.deviget.minesweeper.model.Game;
 import com.deviget.minesweeper.model.GameStatus;
@@ -10,11 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.deviget.minesweeper.model.GameStatus.IN_PROGRESS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -39,6 +40,8 @@ class GameResponseTransformerTest {
 	@Mock
 	private Game game;
 
+	private final List<RowResponse> board = new ArrayList<>();
+
 	@BeforeEach
 	void setUp() {
 		openMocks(this);
@@ -48,19 +51,40 @@ class GameResponseTransformerTest {
 		when(game.getStatus()).thenReturn(GAME_STATUS);
 		when(game.getLeftFlags()).thenReturn(FLAGS);
 		when(gameTimeResolver.resolve(game)).thenReturn(TIME);
+
+		when(cellsResponseTransformer.transform(anyList())).thenReturn(board);
+	}
+
+	@Test
+	void transformListOfGames_nullUser() {
+		GamesResponse gamesResponse = responseTransformer.transform(Collections.singletonList(game), null);
+
+		assertEquals(1,gamesResponse.getGames().size());
+		assertGameResponse(gamesResponse.getGames().get(0));
+		assertNull(gamesResponse.getUser());
+	}
+
+	@Test
+	void transformListOfGames() {
+		GamesResponse gamesResponse = responseTransformer.transform(Collections.singletonList(game), USER);
+
+		assertEquals(1,gamesResponse.getGames().size());
+		assertGameResponse(gamesResponse.getGames().get(0));
+		assertEquals(USER, gamesResponse.getUser());
 	}
 
 	@Test
 	void transform() {
-		List<RowResponse> board = new ArrayList<>();
-		when(cellsResponseTransformer.transform(anyList())).thenReturn(board);
-
 		GameResponse gameResponse = responseTransformer.transform(game);
-		assertEquals(ID,gameResponse.getId());
-		assertEquals(USER,gameResponse.getUser());
-		assertEquals(GAME_STATUS,gameResponse.getStatus());
-		assertSame(board,gameResponse.getBoard());
-		assertEquals(TIME,gameResponse.getGameTime());
-		assertEquals(FLAGS,gameResponse.getLeftFlags());
+		assertGameResponse(gameResponse);
+	}
+
+	private void assertGameResponse(GameResponse gameResponse) {
+		assertEquals(ID, gameResponse.getId());
+		assertEquals(USER, gameResponse.getUser());
+		assertEquals(GAME_STATUS, gameResponse.getStatus());
+		assertSame(board, gameResponse.getBoard());
+		assertEquals(TIME, gameResponse.getGameTime());
+		assertEquals(FLAGS, gameResponse.getLeftFlags());
 	}
 }

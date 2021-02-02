@@ -4,6 +4,7 @@ import com.deviget.minesweeper.api.request.Action;
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.api.response.GameResponse;
+import com.deviget.minesweeper.api.response.GamesResponse;
 import com.deviget.minesweeper.domain.action.FlagAction;
 import com.deviget.minesweeper.domain.action.GameAction;
 import com.deviget.minesweeper.domain.action.RevealAction;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.EnumMap;
+import java.util.List;
+import java.util.Optional;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
 import static com.deviget.minesweeper.api.request.Action.REVEAL;
@@ -46,14 +49,19 @@ public class GameService {
 		return this.saveAndGenerateResponse(game);
 	}
 
-	public GameResponse pauseGame(int id) {
-		Game game = this.findGame(id);
-		game.setStatus(PAUSED);
-		return this.saveAndGenerateResponse(game);
+	public GamesResponse retrieveGames(String user) {
+		List<Game> games = this.findGames(user);
+		return gameResponseTransformer.transform(games,user);
 	}
 
 	public GameResponse retrieveGame(int id) {
 		Game game = this.findGame(id);
+		return gameResponseTransformer.transform(game);
+	}
+
+	public GameResponse pauseGame(int id) {
+		Game game = this.findGame(id);
+		game.setStatus(PAUSED);
 		return this.saveAndGenerateResponse(game);
 	}
 
@@ -68,6 +76,21 @@ public class GameService {
 	private GameResponse saveAndGenerateResponse(Game game) {
 		gameRepository.save(game);
 		return gameResponseTransformer.transform(game);
+	}
+
+	private List<Game> findGames(String user) {
+		return Optional.ofNullable(user)
+				.map(this::allGamesByUser)
+				.orElse(gameRepository.findAll());
+	}
+
+	private List<Game> allGamesByUser(String user) {
+		List<Game> allByUser = gameRepository.findAllByUser(user);
+
+		if(allByUser.isEmpty())
+			throw new NotFoundException("Games with user " + user + " not found");
+
+		return allByUser;
 	}
 
 	private Game findGame(int id) {

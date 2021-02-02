@@ -3,19 +3,21 @@ package com.deviget.minesweeper.domain.service;
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.api.response.GameResponse;
+import com.deviget.minesweeper.api.response.GamesResponse;
 import com.deviget.minesweeper.domain.action.FlagAction;
 import com.deviget.minesweeper.domain.action.RevealAction;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
 import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.GameFactory;
 import com.deviget.minesweeper.model.Game;
-import com.deviget.minesweeper.model.GameStatus;
 import com.deviget.minesweeper.repository.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
@@ -23,8 +25,6 @@ import static com.deviget.minesweeper.api.request.Action.REVEAL;
 import static com.deviget.minesweeper.model.GameStatus.PAUSED;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
@@ -32,6 +32,7 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 class GameServiceTest {
 
 	private static int ID = 271088;
+	private static final String USER = "HIPPIE";
 
 	@InjectMocks
 	private GameService service;
@@ -61,6 +62,9 @@ class GameServiceTest {
 	private GameResponse gameResponse;
 
 	@Mock
+	private GamesResponse gamesResponse;
+
+	@Mock
 	private ActionRequest actionRequest;
 
 	@BeforeEach
@@ -86,16 +90,44 @@ class GameServiceTest {
 	}
 
 	@Test
-	void pauseGame(){
-		GameResponse actualGameResponse = service.pauseGame(ID);
-		verify(game).setStatus(PAUSED);
-		assertSame(gameResponse,actualGameResponse);
-		verify(gameRepository).save(game);
+	public void retrieveGamesByUser() {
+		when(gameResponseTransformer.transform(anyList(),same(USER))).thenReturn(gamesResponse);
+		when(gameRepository.findAllByUser(USER)).thenReturn(Collections.singletonList(game));
+
+		GamesResponse actualGamesResponse = service.retrieveGames(USER);
+
+		assertSame(gamesResponse,actualGamesResponse);
+	}
+
+	@Test
+	public void retrieveGamesByUser_NotFound() {
+		when(gameRepository.findAllByUser(USER)).thenReturn(Collections.emptyList());
+
+		assertThrows(NotFoundException.class, () -> service.retrieveGames(USER));
+
+		verify(gameResponseTransformer,never()).transform(anyList(),same(USER));
+	}
+
+	@Test
+	public void retrieveAllGames() {
+		when(gameResponseTransformer.transform(anyList(),same(null))).thenReturn(gamesResponse);
+		when(gameRepository.findAll()).thenReturn(Collections.singletonList(game));
+
+		GamesResponse actualGamesResponse = service.retrieveGames(null);
+
+		assertSame(gamesResponse,actualGamesResponse);
 	}
 
 	@Test
 	void retrieveGame(){
 		GameResponse actualGameResponse = service.retrieveGame(ID);
+		assertSame(gameResponse,actualGameResponse);
+	}
+
+	@Test
+	void pauseGame(){
+		GameResponse actualGameResponse = service.pauseGame(ID);
+		verify(game).setStatus(PAUSED);
 		assertSame(gameResponse,actualGameResponse);
 		verify(gameRepository).save(game);
 	}

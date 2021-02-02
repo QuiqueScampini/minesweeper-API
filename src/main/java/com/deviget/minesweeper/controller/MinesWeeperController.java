@@ -3,6 +3,7 @@ package com.deviget.minesweeper.controller;
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.api.response.GameResponse;
+import com.deviget.minesweeper.api.response.GamesResponse;
 import com.deviget.minesweeper.controller.validator.RequestValidator;
 import com.deviget.minesweeper.domain.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ public class MinesWeeperController {
 	public GameResponse createGame(@RequestBody GameRequest gameRequest) {
 		requestValidator.validateRequest(gameRequest);
 		return gameService.createGame(gameRequest);
+	}
+
+	@ResponseBody
+	@GetMapping("/game")
+	public GamesResponse retrieveGames(@RequestParam(value = "user", required = false) final String user){
+		return this. gameService.retrieveGames(user);
 	}
 
 	@ResponseBody
