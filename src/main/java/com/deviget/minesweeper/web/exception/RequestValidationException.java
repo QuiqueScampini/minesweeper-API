@@ -1,4 +1,4 @@
-package com.deviget.minesweeper.controller.exception;
+package com.deviget.minesweeper.web.exception;
 
 public class RequestValidationException extends RuntimeException{
 

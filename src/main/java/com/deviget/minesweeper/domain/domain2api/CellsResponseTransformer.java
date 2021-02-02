@@ -2,13 +2,13 @@ package com.deviget.minesweeper.domain.domain2api;
 
 import com.deviget.minesweeper.api.response.CellResponse;
 import com.deviget.minesweeper.api.response.RowResponse;
-import com.deviget.minesweeper.model.Cell;
+import com.deviget.minesweeper.domain.model.Cell;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.deviget.minesweeper.model.CellContent.REVEALED;
+import static com.deviget.minesweeper.domain.model.CellContent.REVEALED;
 
 @Component
 class CellsResponseTransformer {

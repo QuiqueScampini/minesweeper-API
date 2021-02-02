@@ -1,7 +1,7 @@
-package com.deviget.minesweeper.controller.handler;
+package com.deviget.minesweeper.web.exception;
 
 import com.deviget.minesweeper.api.response.ErrorResponse;
-import com.deviget.minesweeper.controller.exception.RequestValidationException;
+import com.deviget.minesweeper.web.exception.RequestValidationException;
 import com.deviget.minesweeper.domain.exception.InternalException;
 import com.deviget.minesweeper.domain.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;

@@ -2,8 +2,8 @@ package com.deviget.minesweeper.domain.domain2api;
 
 import com.deviget.minesweeper.api.response.CellResponse;
 import com.deviget.minesweeper.api.response.RowResponse;
-import com.deviget.minesweeper.model.Cell;
-import com.deviget.minesweeper.model.CellContent;
+import com.deviget.minesweeper.domain.model.Cell;
+import com.deviget.minesweeper.domain.model.CellContent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.deviget.minesweeper.model.CellContent.*;
+import static com.deviget.minesweeper.domain.model.CellContent.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;

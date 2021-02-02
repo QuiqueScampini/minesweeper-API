@@ -2,18 +2,18 @@ package com.deviget.minesweeper.domain.action;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.domain.service.BoardService;
-import com.deviget.minesweeper.model.Cell;
-import com.deviget.minesweeper.model.CellContent;
-import com.deviget.minesweeper.model.Game;
+import com.deviget.minesweeper.domain.model.Cell;
+import com.deviget.minesweeper.domain.model.CellContent;
+import com.deviget.minesweeper.domain.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.deviget.minesweeper.model.CellContent.FLAG;
-import static com.deviget.minesweeper.model.CellContent.REVEALED;
-import static com.deviget.minesweeper.model.GameStatus.*;
+import static com.deviget.minesweeper.domain.model.CellContent.FLAG;
+import static com.deviget.minesweeper.domain.model.CellContent.REVEALED;
+import static com.deviget.minesweeper.domain.model.GameStatus.*;
 
 @Component
 public class RevealAction implements GameAction {

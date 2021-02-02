@@ -11,7 +11,7 @@ import com.deviget.minesweeper.domain.action.RevealAction;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
 import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.GameFactory;
-import com.deviget.minesweeper.model.Game;
+import com.deviget.minesweeper.domain.model.Game;
 import com.deviget.minesweeper.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
 import static com.deviget.minesweeper.api.request.Action.REVEAL;
-import static com.deviget.minesweeper.model.GameStatus.PAUSED;
+import static com.deviget.minesweeper.domain.model.GameStatus.PAUSED;
 
 @Service
 public class GameService {

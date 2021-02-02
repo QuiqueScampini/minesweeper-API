@@ -1,7 +1,7 @@
 package com.deviget.minesweeper.repository;
 
 import com.deviget.minesweeper.domain.exception.InternalException;
-import com.deviget.minesweeper.model.Cell;
+import com.deviget.minesweeper.domain.model.Cell;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

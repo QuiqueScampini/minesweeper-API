@@ -2,8 +2,8 @@ package com.deviget.minesweeper.domain.factory;
 
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.domain.service.BoardService;
-import com.deviget.minesweeper.model.Cell;
-import com.deviget.minesweeper.model.Game;
+import com.deviget.minesweeper.domain.model.Cell;
+import com.deviget.minesweeper.domain.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

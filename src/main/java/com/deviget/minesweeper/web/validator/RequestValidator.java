@@ -1,7 +1,7 @@
-package com.deviget.minesweeper.controller.validator;
+package com.deviget.minesweeper.web.validator;
 
 import com.deviget.minesweeper.api.request.GameRequest;
-import com.deviget.minesweeper.controller.exception.RequestValidationException;
+import com.deviget.minesweeper.web.exception.RequestValidationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

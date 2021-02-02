@@ -1,9 +1,9 @@
 package com.deviget.minesweeper.api.response;
 
-import com.deviget.minesweeper.model.CellContent;
+import com.deviget.minesweeper.domain.model.CellContent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import static com.deviget.minesweeper.model.CellContent.REVEALED;
+import static com.deviget.minesweeper.domain.model.CellContent.REVEALED;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CellResponse {

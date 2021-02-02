@@ -9,7 +9,7 @@ import com.deviget.minesweeper.domain.action.RevealAction;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
 import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.GameFactory;
-import com.deviget.minesweeper.model.Game;
+import com.deviget.minesweeper.domain.model.Game;
 import com.deviget.minesweeper.repository.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +17,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
 import static com.deviget.minesweeper.api.request.Action.REVEAL;
-import static com.deviget.minesweeper.model.GameStatus.PAUSED;
+import static com.deviget.minesweeper.domain.model.GameStatus.PAUSED;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;

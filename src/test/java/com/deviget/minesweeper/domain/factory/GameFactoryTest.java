@@ -2,8 +2,8 @@ package com.deviget.minesweeper.domain.factory;
 
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.domain.service.BoardService;
-import com.deviget.minesweeper.model.Cell;
-import com.deviget.minesweeper.model.Game;
+import com.deviget.minesweeper.domain.model.Cell;
+import com.deviget.minesweeper.domain.model.Game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import java.util.Collections;
 import java.util.List;
 
-import static com.deviget.minesweeper.model.GameStatus.CREATED;
+import static com.deviget.minesweeper.domain.model.GameStatus.CREATED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.when;

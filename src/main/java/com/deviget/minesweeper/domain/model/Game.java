@@ -1,11 +1,11 @@
-package com.deviget.minesweeper.model;
+package com.deviget.minesweeper.domain.model;
 
 import com.deviget.minesweeper.repository.JpaBoardConverter;
 
 import javax.persistence.*;
 import java.util.List;
 
-import static com.deviget.minesweeper.model.GameStatus.CREATED;
+import static com.deviget.minesweeper.domain.model.GameStatus.CREATED;
 
 @Entity
 @Table(indexes = @Index(columnList = "user"))

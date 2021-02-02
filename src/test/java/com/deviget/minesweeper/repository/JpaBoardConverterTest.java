@@ -1,14 +1,14 @@
 package com.deviget.minesweeper.repository;
 
-import com.deviget.minesweeper.model.Cell;
-import com.deviget.minesweeper.model.CellContent;
+import com.deviget.minesweeper.domain.model.Cell;
+import com.deviget.minesweeper.domain.model.CellContent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.deviget.minesweeper.model.CellContent.*;
+import static com.deviget.minesweeper.domain.model.CellContent.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

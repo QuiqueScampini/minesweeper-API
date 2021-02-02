@@ -1,6 +1,6 @@
 package com.deviget.minesweeper.domain.factory;
 
-import com.deviget.minesweeper.model.Cell;
+import com.deviget.minesweeper.domain.model.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.deviget.minesweeper.domain.service.BoardService.MINE_VALUE;
-import static com.deviget.minesweeper.model.CellContent.NONE;
+import static com.deviget.minesweeper.domain.model.CellContent.NONE;
 
 @Component
 public class BoardFactory {

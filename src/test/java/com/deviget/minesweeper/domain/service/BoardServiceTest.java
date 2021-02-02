@@ -1,9 +1,9 @@
 package com.deviget.minesweeper.domain.service;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
-import com.deviget.minesweeper.controller.exception.RequestValidationException;
+import com.deviget.minesweeper.web.exception.RequestValidationException;
 import com.deviget.minesweeper.domain.factory.BoardFactory;
-import com.deviget.minesweeper.model.Cell;
+import com.deviget.minesweeper.domain.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.deviget.minesweeper.domain.service.BoardService.MINE_VALUE;
-import static com.deviget.minesweeper.model.CellContent.NONE;
-import static com.deviget.minesweeper.model.CellContent.REVEALED;
+import static com.deviget.minesweeper.domain.model.CellContent.NONE;
+import static com.deviget.minesweeper.domain.model.CellContent.REVEALED;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;

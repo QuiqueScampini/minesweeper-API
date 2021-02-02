@@ -1,10 +1,10 @@
-package com.deviget.minesweeper.controller;
+package com.deviget.minesweeper.web.controller;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
 import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.api.response.GamesResponse;
-import com.deviget.minesweeper.controller.validator.RequestValidator;
+import com.deviget.minesweeper.web.validator.RequestValidator;
 import com.deviget.minesweeper.domain.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

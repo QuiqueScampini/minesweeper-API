@@ -1,16 +1,16 @@
 package com.deviget.minesweeper.domain.service;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
-import com.deviget.minesweeper.controller.exception.RequestValidationException;
+import com.deviget.minesweeper.web.exception.RequestValidationException;
 import com.deviget.minesweeper.domain.factory.BoardFactory;
-import com.deviget.minesweeper.model.Cell;
+import com.deviget.minesweeper.domain.model.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.deviget.minesweeper.model.CellContent.REVEALED;
+import static com.deviget.minesweeper.domain.model.CellContent.REVEALED;
 
 @Component
 public class BoardService {

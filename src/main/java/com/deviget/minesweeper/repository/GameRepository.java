@@ -1,6 +1,6 @@
 package com.deviget.minesweeper.repository;
 
-import com.deviget.minesweeper.model.Game;
+import com.deviget.minesweeper.domain.model.Game;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

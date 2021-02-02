@@ -1,4 +1,4 @@
-package com.deviget.minesweeper.model;
+package com.deviget.minesweeper.domain.model;
 
 import java.io.Serializable;
 

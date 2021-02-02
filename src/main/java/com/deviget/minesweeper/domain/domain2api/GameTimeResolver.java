@@ -1,6 +1,6 @@
 package com.deviget.minesweeper.domain.domain2api;
 
-import com.deviget.minesweeper.model.Game;
+import com.deviget.minesweeper.domain.model.Game;
 import org.springframework.stereotype.Component;
 
 @Component
