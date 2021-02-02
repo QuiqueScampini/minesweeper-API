@@ -8,69 +8,42 @@ import com.deviget.minesweeper.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static com.deviget.minesweeper.model.CellContent.FLAG;
+import static com.deviget.minesweeper.model.CellContent.REVEALED;
 import static com.deviget.minesweeper.model.GameStatus.*;
 
 @Component
 public class RevealAction implements GameAction {
 
+	private static final List<CellContent> IGNORE_CONTENTS = Arrays.asList(REVEALED, FLAG);
+
 	@Autowired
 	private BoardService boardService;
 
 	@Override
-	public List<Cell> execute(ActionRequest actionRequest, Game game) {
+	public void execute(ActionRequest actionRequest, Game game) {
+		List<List<Cell>> board = game.getBoard();
 
 		if(CREATED.equals(game.getStatus()))
 			game.setStatus(IN_PROGRESS);
 
-		Cell cell = boardService.retrieveCell(actionRequest,game);
+		Cell cell = boardService.retrieveCell(actionRequest, board);
 
 		//If it's not hidden or the content is a flag then we do nothing
-		if(!cell.isHidden() || cell.getContent().equals(CellContent.FLAG))
-			return Collections.emptyList();
+		if(IGNORE_CONTENTS.contains(cell.getContent()))
+			return;
 
-		if(cell.getValue() < 0 ) {
+		if(boardService.isMine(cell) ) {
 			game.setStatus(LOST);
-			return this.revealAllMines(game);
+			boardService.revealAllMines(board);
 		}
 
-		List<Cell> affectedCells = this.revealCell(cell, game);
-		if(boardService.allButMinesRevealed(game))
+		boardService.revealCell(cell, board);
+
+		if(boardService.allButMinesRevealed(board))
 			game.setStatus(WON);
-
-		return affectedCells;
-	}
-
-	private List<Cell> revealAllMines(Game game) {
-		List<Cell> mines = boardService.retrieveHiddenMines(game);
-
-		for(Cell mine : mines)
-			mine.setHidden(false);
-
-		return mines;
-	}
-
-	private List<Cell> revealCell(Cell cell, Game game) {
-		List<Cell> result = new ArrayList<>();
-		cell.setHidden(false);
-		result.add(cell);
-		if(cell.getValue().equals(0)){
-			result.addAll(this.revealAdjacent(cell,game));
-		}
-		return result;
-	}
-
-	private List<Cell> revealAdjacent(Cell cell, Game game) {
-		return this.boardService.retrieveAdjacent(cell,game)
-				.stream()
-				.filter(Cell::isHidden)
-				.map( adjacentCell -> this.revealCell(adjacentCell,game))
-				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
 	}
 }

@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.domain.service;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
+import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.BoardFactory;
 import com.deviget.minesweeper.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +13,11 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.deviget.minesweeper.domain.service.BoardService.MINE_VALUE;
+import static com.deviget.minesweeper.model.CellContent.NONE;
 import static com.deviget.minesweeper.model.CellContent.REVEALED;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 class BoardServiceTest {
@@ -59,50 +61,86 @@ class BoardServiceTest {
 	}
 
 	@Test
-	void retrieveAdjacent_extremeCell() {
-		Cell cell = board.get(0).get(0);
+	void retrieveCell_InvalidRow() {
+		when(actionRequest.getRow()).thenReturn(6);
+		when(actionRequest.getCol()).thenReturn(1);
 
-		List<Cell> cells = service.retrieveAdjacent(cell, board);
-
-		assertContainingCell(cells, 0, 1);
-		assertContainingCell(cells, 1, 0);
-		assertContainingCell(cells, 1, 1);
+		assertThrows(NotFoundException.class, () -> service.retrieveCell(actionRequest,board));
 	}
 
 	@Test
-	void retrieveAdjacent_borderCell() {
-		Cell cell = board.get(1).get(2);
+	void retrieveCell_InvalidCol() {
+		when(actionRequest.getRow()).thenReturn(1);
+		when(actionRequest.getCol()).thenReturn(-10);
 
-		List<Cell> cells = service.retrieveAdjacent(cell, board);
+		assertThrows(NotFoundException.class, () -> service.retrieveCell(actionRequest,board));
+	}
 
-		assertContainingCell(cells, 0, 1);
-		assertContainingCell(cells, 0, 2);
-		assertContainingCell(cells, 1, 1);
-		assertContainingCell(cells, 2, 1);
-		assertContainingCell(cells, 2, 2);
+
+	@Test
+	public void isMine_true(){
+		convertToMine(1,2);
+		Cell mine = this.getCell(1, 2);
+
+		assertTrue(service.isMine(mine));
 	}
 
 	@Test
-	void retrieveAdjacent_InnerCell() {
-		Cell cell = board.get(1).get(1);
+	public void isMine_false(){
+		Cell cell = this.getCell(1, 2);
 
-		List<Cell> cells = service.retrieveAdjacent(cell, board);
+		assertFalse(service.isMine(cell));
+	}
 
-		assertContainingCell(cells, 0, 0);
-		assertContainingCell(cells, 0, 1);
-		assertContainingCell(cells, 0, 2);
+	@Test
+	public void revealAllMines() {
+		convertToMine(0,0);
+		convertToMine(1,2);
 
-		assertContainingCell(cells, 1, 0);
-		assertContainingCell(cells, 1, 2);
+		service.revealAllMines(board);
 
-		assertContainingCell(cells, 2, 0);
-		assertContainingCell(cells, 2, 1);
-		assertContainingCell(cells, 2, 2);
+		verify(this.getCell(0, 0)).setContent(REVEALED);
+		verify(this.getCell(1, 2)).setContent(REVEALED);
+	}
+
+	@Test
+	public void revealCell_notRevealsAdjacent() {
+		Cell cell = this.getCell(0, 0);
+
+		service.revealCell(cell,board);
+
+		verify(cell).setContent(REVEALED);
+	}
+
+	@Test
+	public void revealCell_RevealsAdjacent() {
+		Cell cell = this.getCell(0, 0);
+		Cell cell1 = this.getCell(0, 1);
+		Cell cell2 = this.getCell(1, 0);
+		Cell cell3 = this.getCell(1, 1);
+		Cell cell4 = this.getCell(2, 2);
+
+		revealCell(0,1);
+		when(cell.getValue()).thenReturn(0);
+
+		/*This is to avoid a loop
+		* as this is a mock the setContent
+		* will not change it's value so it will
+		* end in an infinite loop*/
+		revealCell(0,0);
+
+		service.revealCell(cell,board);
+
+		verify(cell).setContent(REVEALED);
+		verify(cell1,never()).setContent(REVEALED);
+		verify(cell2).setContent(REVEALED);
+		verify(cell3).setContent(REVEALED);
+		verify(cell4,never()).setContent(REVEALED);
 	}
 
 	@Test
 	public void allButMinesRevealed_false() {
-		Cell mine = board.get(0).get(1);
+		Cell mine = getCell(0, 1);
 		when(mine.getValue()).thenReturn(-1);
 
 		assertFalse(service.allButMinesRevealed(board));
@@ -125,42 +163,16 @@ class BoardServiceTest {
 		assertTrue(service.allButMinesRevealed(board));
 	}
 
-	@Test
-	public void retrieveMines() {
-		convertToMine(0,0);
-		convertToMine(1,2);
-
-		List<Cell> hiddenMines = service.retrieveMines(board);
-
-		assertContainingCell(hiddenMines,0,0);
-		assertContainingCell(hiddenMines,1,2);
-	}
-
-	@Test
-	public void isMine_true(){
-		convertToMine(1,2);
-		Cell mine = board.get(1).get(2);
-
-		assertTrue(service.isMine(mine));
-	}
-
-	@Test
-	public void isMine_false(){
-		Cell cell = board.get(1).get(2);
-
-		assertFalse(service.isMine(cell));
-	}
-
-	private void assertContainingCell(List<Cell> cells, int row, int col) {
-		assertTrue(cells.stream().anyMatch(c -> c.getRow() == row && c.getCol() == col));
+	private void convertToMine(int row, int col) {
+		when(getCell(row, col).getValue()).thenReturn(MINE_VALUE);
 	}
 
 	private void revealCell(int row, int col) {
-		when(board.get(row).get(col).getContent()).thenReturn(REVEALED);
+		when(this.getCell(row,col).getContent()).thenReturn(REVEALED);
 	}
 
-	private void convertToMine(int row, int col) {
-		when(board.get(row).get(col).getValue()).thenReturn(-1);
+	private Cell getCell(int row, int col) {
+		return board.get(row).get(col);
 	}
 
 	private List<List<Cell>> mockBoard() {
@@ -173,6 +185,7 @@ class BoardServiceTest {
 				when(cellMock.getRow()).thenReturn(row);
 				when(cellMock.getCol()).thenReturn(col);
 				when(cellMock.getValue()).thenReturn(1);
+				when(cellMock.getContent()).thenReturn(NONE);
 				actualRow.add(cellMock);
 			}
 		}
