@@ -9,6 +9,7 @@ import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
 import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.GameFactory;
 import com.deviget.minesweeper.model.Game;
+import com.deviget.minesweeper.model.GameStatus;
 import com.deviget.minesweeper.repository.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
 import static com.deviget.minesweeper.api.request.Action.REVEAL;
+import static com.deviget.minesweeper.model.GameStatus.PAUSED;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -79,6 +81,14 @@ class GameServiceTest {
 
 		GameResponse actualGameResponse = service.createGame(gameRequest);
 
+		assertSame(gameResponse,actualGameResponse);
+		verify(gameRepository).save(game);
+	}
+
+	@Test
+	void pauseGame(){
+		GameResponse actualGameResponse = service.pauseGame(ID);
+		verify(game).setStatus(PAUSED);
 		assertSame(gameResponse,actualGameResponse);
 		verify(gameRepository).save(game);
 	}

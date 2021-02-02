@@ -19,6 +19,7 @@ import java.util.EnumMap;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
 import static com.deviget.minesweeper.api.request.Action.REVEAL;
+import static com.deviget.minesweeper.model.GameStatus.PAUSED;
 
 @Service
 public class GameService {
@@ -42,6 +43,12 @@ public class GameService {
 
 	public GameResponse createGame(GameRequest gameRequest) {
 		Game game = gameFactory.create(gameRequest);
+		return this.saveAndGenerateResponse(game);
+	}
+
+	public GameResponse pauseGame(int id) {
+		Game game = this.findGame(id);
+		game.setStatus(PAUSED);
 		return this.saveAndGenerateResponse(game);
 	}
 

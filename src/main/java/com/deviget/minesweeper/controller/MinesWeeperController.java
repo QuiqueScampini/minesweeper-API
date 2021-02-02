@@ -31,7 +31,13 @@ public class MinesWeeperController {
 	}
 
 	@ResponseBody
-	@PostMapping("/game/{id}")
+	@PatchMapping("/game/{id}")
+	public GameResponse pauseGame(@PathVariable(value = "id") int id) {
+		return this.gameService.pauseGame(id);
+	}
+
+	@ResponseBody
+	@PutMapping("/game/{id}")
 	public GameResponse executeAction(@RequestBody ActionRequest actionRequest, @PathVariable(value = "id") int id) {
 		requestValidator.validateRequest(actionRequest);
 		return this.gameService.executeAction(id,actionRequest);
