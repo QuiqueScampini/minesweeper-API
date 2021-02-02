@@ -1,5 +1,7 @@
 package com.deviget.minesweeper.model;
 
+import com.deviget.minesweeper.repository.JpaBoardConverter;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,14 +15,18 @@ public class Game {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private final String user;
+	private String user;
 
 	private GameStatus status;
 
-	@Lob
-	private final List<List<Cell>> board;
+	@Convert(converter = JpaBoardConverter.class)
+	@Column(name = "board", columnDefinition = "json")
+	private List<List<Cell>> board;
 
 	private int leftFlags;
+
+	public Game() {
+	}
 
 	public Game(String user, List<List<Cell>> board, int leftFlags) {
 		this.user = user;
