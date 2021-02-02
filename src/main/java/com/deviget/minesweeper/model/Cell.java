@@ -2,20 +2,21 @@ package com.deviget.minesweeper.model;
 
 import java.io.Serializable;
 
-import static com.deviget.minesweeper.model.CellContent.NONE;
-
 public class Cell implements Serializable {
 
-	private final int row;
-	private final int col;
+	private int row;
+	private int col;
 	private CellContent content;
-	private final Integer value;
+	private Integer value;
 
-	public Cell(int row, int col,Integer value) {
+	public Cell() {
+	}
+
+	public Cell(int row, int col, Integer value, CellContent content) {
 		this.row = row;
 		this.col = col;
 		this.value = value;
-		this.content = NONE;
+		this.content = content;
 	}
 
 	public int getRow() {
