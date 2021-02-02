@@ -1,7 +1,7 @@
 package com.deviget.minesweeper.domain.service;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
-import com.deviget.minesweeper.domain.exception.NotFoundException;
+import com.deviget.minesweeper.controller.exception.RequestValidationException;
 import com.deviget.minesweeper.domain.factory.BoardFactory;
 import com.deviget.minesweeper.model.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +33,11 @@ public class BoardService {
 
 	private void validate(int row, int col, List<List<Cell>> board) {
 		if(row < 0 || row >= board.size())
-			throw new NotFoundException("Invalid Row "+ row);
+			throw new RequestValidationException("Invalid Row "+ row);
 
 		int colsNumber = board.get(row).size();
 		if(col < 0 || col >= colsNumber)
-			throw new NotFoundException("Invalid Col "+ row);
+			throw new RequestValidationException("Invalid Col "+ row);
 	}
 
 	public boolean isMine(Cell cell){

@@ -1,7 +1,7 @@
 package com.deviget.minesweeper.domain.service;
 
 import com.deviget.minesweeper.api.request.ActionRequest;
-import com.deviget.minesweeper.domain.exception.NotFoundException;
+import com.deviget.minesweeper.controller.exception.RequestValidationException;
 import com.deviget.minesweeper.domain.factory.BoardFactory;
 import com.deviget.minesweeper.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +65,7 @@ class BoardServiceTest {
 		when(actionRequest.getRow()).thenReturn(6);
 		when(actionRequest.getCol()).thenReturn(1);
 
-		assertThrows(NotFoundException.class, () -> service.retrieveCell(actionRequest,board));
+		assertThrows(RequestValidationException.class, () -> service.retrieveCell(actionRequest,board));
 	}
 
 	@Test
@@ -73,7 +73,7 @@ class BoardServiceTest {
 		when(actionRequest.getRow()).thenReturn(1);
 		when(actionRequest.getCol()).thenReturn(-10);
 
-		assertThrows(NotFoundException.class, () -> service.retrieveCell(actionRequest,board));
+		assertThrows(RequestValidationException.class, () -> service.retrieveCell(actionRequest,board));
 	}
 
 
