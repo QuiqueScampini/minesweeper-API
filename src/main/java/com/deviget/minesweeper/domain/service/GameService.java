@@ -10,15 +10,12 @@ import com.deviget.minesweeper.domain.action.RevealAction;
 import com.deviget.minesweeper.domain.domain2api.GameResponseTransformer;
 import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.GameFactory;
-import com.deviget.minesweeper.model.Cell;
 import com.deviget.minesweeper.model.Game;
 import com.deviget.minesweeper.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.List;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
 import static com.deviget.minesweeper.api.request.Action.REVEAL;
