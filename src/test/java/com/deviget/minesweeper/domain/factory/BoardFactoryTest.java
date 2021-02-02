@@ -1,6 +1,5 @@
 package com.deviget.minesweeper.domain.factory;
 
-import com.deviget.minesweeper.api.request.GameRequest;
 import com.deviget.minesweeper.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

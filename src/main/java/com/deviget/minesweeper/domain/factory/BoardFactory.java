@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.deviget.minesweeper.domain.service.BoardService.MINE_VALUE;
 import static com.deviget.minesweeper.model.CellContent.NONE;
 
 @Component
 public class BoardFactory {
-
-	private static final int MINE_VALUE = -1;
 
 	@Autowired
 	private MinesPositionGenerator minesPositionsGenerator;
