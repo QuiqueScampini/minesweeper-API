@@ -19,7 +19,7 @@ Miesweeper-api challenge project.
 
 ## Api Definition 
 Api documentation could be seen on swagger http://localhost:8080/minesweeper
-You can see the Api Definition on the Wiki https://github.com/QuiqueScampini/minesweeper-API/wiki/Api-Definition
+You can see the [Api Definition](https://github.com/QuiqueScampini/minesweeper-API/wiki/Api-Definition) on Wiki.
 
 ## Considerations
 
@@ -30,10 +30,10 @@ You can see the Api Definition on the Wiki https://github.com/QuiqueScampini/min
     - When Status goes to PAUSED store that amount of seconds and stop counting.
     - When Status goes to IN_PROGRESS again it counting adding last saved amount of seconds.
     - When Game finishes it stop counting.
-- An finished game can not be replayed.
+- A finished game can not be replayed.
 - Games search by user is case sensitive Quique and quique are diferent users.
 - When you FLAG a cell it takes 1 of your leftFlags.
-- You can put more flags than mines so that counter would be negative.
+- You can put more flags than mines so leftFlags counter would be negative.
 - When you QUESTION mark a cell it recover that leftFlag.
 - If you send an invalid ActionRequest Action it will return a 400 error but not an ErrorResponse.
 
@@ -43,5 +43,6 @@ You can see the Api Definition on the Wiki https://github.com/QuiqueScampini/min
 - Once created the database it can't be erased, you will have to delete it from filesystem and start the app again.
 - As we only have to distinguish the user that started the game, I only save it's name in the game data. If more user data is needed the model may not be enough.
 - As this wil be a standalone mobile app concurrent request where not considered.
+- Log file and database will be written in the application path. 
 
  
