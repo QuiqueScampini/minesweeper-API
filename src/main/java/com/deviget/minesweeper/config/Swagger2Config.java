@@ -22,6 +22,7 @@ public class Swagger2Config {
 				.apis(RequestHandlerSelectors.basePackage("com.deviget.minesweeper.web.controller"))
 				.paths(PathSelectors.ant("/minesweeper/game/**"))
 				.build()
+				.useDefaultResponseMessages(false)
 				.apiInfo(this.metaData());
 	}
 
