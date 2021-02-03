@@ -22,10 +22,12 @@ import java.util.Optional;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
 import static com.deviget.minesweeper.api.request.Action.REVEAL;
-import static com.deviget.minesweeper.domain.model.GameStatus.PAUSED;
 
 @Service
 public class GameService {
+
+	@Autowired
+	private GameOperation gameOperation;
 
 	@Autowired
 	private GameFactory gameFactory;
@@ -44,11 +46,6 @@ public class GameService {
 		actionsMap.put(REVEAL,revealAction);
 	}
 
-	public GameResponse createGame(GameRequest gameRequest) {
-		Game game = gameFactory.create(gameRequest);
-		return this.saveAndGenerateResponse(game);
-	}
-
 	public GamesResponse retrieveGames(String user) {
 		List<Game> games = this.findGames(user);
 		return gameResponseTransformer.transform(games,user);
@@ -59,9 +56,14 @@ public class GameService {
 		return gameResponseTransformer.transform(game);
 	}
 
+	public GameResponse createGame(GameRequest gameRequest) {
+		Game game = gameFactory.create(gameRequest);
+		return this.saveAndGenerateResponse(game);
+	}
+
 	public GameResponse pauseGame(int id) {
 		Game game = this.findGame(id);
-		game.setStatus(PAUSED);
+		gameOperation.pauseGame(game);
 		return this.saveAndGenerateResponse(game);
 	}
 

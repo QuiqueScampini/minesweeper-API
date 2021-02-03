@@ -21,7 +21,6 @@ import java.util.Optional;
 
 import static com.deviget.minesweeper.api.request.Action.FLAG;
 import static com.deviget.minesweeper.api.request.Action.REVEAL;
-import static com.deviget.minesweeper.domain.model.GameStatus.PAUSED;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -35,6 +34,9 @@ class GameServiceTest {
 
 	@InjectMocks
 	private GameService service;
+
+	@Mock
+	private GameOperation gameOperation;
 
 	@Mock
 	private GameFactory gameFactory;
@@ -70,22 +72,13 @@ class GameServiceTest {
 	void setUp() {
 		openMocks(this);
 		service = new GameService(flagAction,revealAction);
+		setField(service,"gameOperation",gameOperation);
 		setField(service,"gameFactory",gameFactory);
 		setField(service,"gameRepository",gameRepository);
 		setField(service,"gameResponseTransformer",gameResponseTransformer);
 
 		when(gameResponseTransformer.transform(game)).thenReturn(gameResponse);
 		when(gameRepository.findById(ID)).thenReturn(Optional.of(game));
-	}
-
-	@Test
-	void createGame() {
-		when(gameFactory.create(gameRequest)).thenReturn(game);
-
-		GameResponse actualGameResponse = service.createGame(gameRequest);
-
-		assertSame(gameResponse,actualGameResponse);
-		verify(gameRepository).save(game);
 	}
 
 	@Test
@@ -124,11 +117,22 @@ class GameServiceTest {
 	}
 
 	@Test
-	void pauseGame(){
-		GameResponse actualGameResponse = service.pauseGame(ID);
-		verify(game).setStatus(PAUSED);
+	void createGame() {
+		when(gameFactory.create(gameRequest)).thenReturn(game);
+
+		GameResponse actualGameResponse = service.createGame(gameRequest);
+
 		assertSame(gameResponse,actualGameResponse);
 		verify(gameRepository).save(game);
+	}
+
+	@Test
+	void pauseGame(){
+		GameResponse actualGameResponse = service.pauseGame(ID);
+
+		verify(gameOperation).pauseGame(game);
+		verify(gameRepository).save(game);
+		assertSame(gameResponse,actualGameResponse);
 	}
 
 	@Test
