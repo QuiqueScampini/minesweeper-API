@@ -7,6 +7,160 @@ For information you can visit our [Wiki](https://github.com/QuiqueScampini/mines
 - #### [Challenge Statement](https://github.com/QuiqueScampini/minesweeper-API/wiki/Challenge-Statement)
 - #### [Api Definition](https://github.com/QuiqueScampini/minesweeper-API/wiki/Api-Definition)
 
+## Requirements
+- Java 11
+- Maven 
+
+## Run the App
+- Clone the repository with git or download from [this link](https://github.com/QuiqueScampini/minesweeper-API/archive/master.zip)
+- Start spring-boot app.
+    ```shell script
+    ./mvnw spring-boot:run
+    ```
+    
+- This will run the app on http://localhost:8080
+
+## Api Definition
+Api documentation could be seen on swagger at http://localhost:8080/minesweeper
+
+### Examples
+#### Game Creation
+```shell script
+curl --location --request POST 'http://localhost:8080/minesweeper/game' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "rows": 10,
+  "cols": 10,
+  "mines": 10,
+  "user": "Licher"
+}'
+```
+Returns GameResponse
+
+#### Flag/Reveal a Cell
+```shell script
+curl --location --request PUT 'http://localhost:8080/minesweeper/game/1' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "action": "FLAG",
+  "col": 1,
+  "row": 0
+}'
+```
+Returns GameResponse
+#### Pause Game
+```shell script
+curl --location --request PATCH 'http://localhost:8080/minesweeper/game/10'
+```
+Returns GameResponse
+
+#### Retrieve Games by Id
+```shell script
+curl --location --request GET 'http://localhost:8080/minesweeper/game/1'
+```
+Returns GamesResponse
+
+#### Retrieve Games by User (If not user sent this will bring all games)
+```shell script
+curl --location --request GET 'http://localhost:8080/minesweeper/game?user=Licher'
+```
+Returns GamesResponse
+
+### Responses Examples
+#### GameResponse
+```json
+{
+    "id": 1,
+    "user": "Quique",
+    "status": "CREATED",
+    "board": [
+        {
+            "cols": [
+                {
+                    "content": "NONE"
+                },
+                {
+                    "content": "FLAG"
+                },
+                {
+                    "content": "NONE"
+                }
+            ]
+        },
+        {
+            "cols": [
+                {
+                    "content": "QUESTION"
+                },
+                {
+                    "value": 1,
+                    "content": "REVEALED"
+                },
+                {
+                    "content": "NONE"
+                }
+            ]
+        } ]
+        }
+    ],
+    "gameTime": 35,
+    "leftFlags": 1
+}
+```
+
+#### GamesResponse
+```json
+{
+    "games": [
+        {
+            "id": 1,
+            "user": "Quique",
+            "status": "CREATED",
+            "board": [
+                {
+                    "cols": [
+                        {
+                            "content": "NONE"
+                        },
+                        {
+                            "content": "QUESTION"
+                        },
+                        {
+                            "content": "NONE"
+                        }
+                    ]
+                },
+                {
+                    "cols": [
+                        {
+                            "content": "FLAG"
+                        },
+                        {
+                            "content": "NONE"
+                        },
+                        {
+                            "value": 1,
+                            "content": "REVEALED"
+                        }
+                    ]
+                }
+            ],
+            "gameTime": 50,
+            "leftFlags": 1
+        }
+    ]
+}
+```
+#### ErrorResponse
+```json
+{
+    "status": "NOT_FOUND",
+    "timestamp": "2021-02-03T10:00:25.6644",
+    "message": "Game with Id: 10 not found"
+}
+```
+
+
 ## Considerations
 
 - New games can have a max of 30 rows, 30 cols and 99 mines.
