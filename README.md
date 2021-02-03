@@ -19,6 +19,7 @@ Miesweeper-api challenge project.
 
 ## Api Definition 
 Api documentation could be seen on swagger http://localhost:8080/minesweeper
+
 You can see the [Api Definition](https://github.com/QuiqueScampini/minesweeper-API/wiki/Api-Definition) on Wiki.
 
 ## Considerations
