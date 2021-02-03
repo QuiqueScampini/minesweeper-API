@@ -13,6 +13,8 @@ import com.deviget.minesweeper.domain.exception.NotFoundException;
 import com.deviget.minesweeper.domain.factory.GameFactory;
 import com.deviget.minesweeper.domain.model.Game;
 import com.deviget.minesweeper.repository.GameRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import static com.deviget.minesweeper.api.request.Action.REVEAL;
 
 @Service
 public class GameService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameService.class);
 
 	@Autowired
 	private GameOperation gameOperation;
@@ -48,6 +52,7 @@ public class GameService {
 
 	public GamesResponse retrieveGames(String user) {
 		List<Game> games = this.findGames(user);
+		LOGGER.info("Retrieved {} Games", games.size());
 		return gameResponseTransformer.transform(games,user);
 	}
 
@@ -58,7 +63,9 @@ public class GameService {
 
 	public GameResponse createGame(GameRequest gameRequest) {
 		Game game = gameFactory.create(gameRequest);
-		return this.saveAndGenerateResponse(game);
+		GameResponse gameResponse = this.saveAndGenerateResponse(game);
+		LOGGER.info("Game with id {} created",game.getId());
+		return gameResponse;
 	}
 
 	public GameResponse pauseGame(int id) {
@@ -70,6 +77,7 @@ public class GameService {
 	public GameResponse executeAction(int id, ActionRequest actionRequest) {
 		Game game = this.findGame(id);
 		GameAction action = actionsMap.get(actionRequest.getAction());
+		LOGGER.info("Executing Action {} on Game {}",action.getClass().getSimpleName(),game.getId());
 		action.execute(actionRequest, game);
 
 		return this.saveAndGenerateResponse(game);
@@ -77,6 +85,7 @@ public class GameService {
 
 	private GameResponse saveAndGenerateResponse(Game game) {
 		gameRepository.save(game);
+		LOGGER.debug("Game with id {} saved",game.getId());
 		return gameResponseTransformer.transform(game);
 	}
 

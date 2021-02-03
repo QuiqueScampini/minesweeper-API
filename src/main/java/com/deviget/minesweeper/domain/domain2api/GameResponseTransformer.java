@@ -4,6 +4,8 @@ import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.api.response.GamesResponse;
 import com.deviget.minesweeper.domain.model.Game;
 import com.deviget.minesweeper.domain.service.GameOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class GameResponseTransformer {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameResponseTransformer.class);
 
 	@Autowired
 	private CellsResponseTransformer cellsResponseTransformer;
@@ -27,6 +31,7 @@ public class GameResponseTransformer {
 	}
 
 	public GameResponse transform(Game game) {
+		LOGGER.debug("Generating Game {} response",game.getId());
 		return new GameResponse.Builder()
 				.withId(game.getId())
 				.withUser(game.getUser())
