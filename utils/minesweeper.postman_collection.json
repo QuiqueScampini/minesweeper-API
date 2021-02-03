@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "c03db3ad-fdb2-488f-bd7f-9438f615cc26",
+		"name": "minesweeper",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"rows\": 3,\n  \"cols\": 3,\n  \"mines\": 3,\n  \"user\": \"Quique\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/minesweeper/game",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"minesweeper",
+						"game"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pause",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/minesweeper/game/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"minesweeper",
+						"game",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FLAG",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"action\": \"FLAG\",\n  \"col\": 1,\n  \"row\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/minesweeper/game/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"minesweeper",
+						"game",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REVEAL",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"action\": \"REVEAL\",\n  \"col\": 6,\n  \"row\": 7\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/minesweeper/game/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"minesweeper",
+						"game",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RetrieveByUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/minesweeper/game?user=Licher",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"minesweeper",
+						"game"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "Licher"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RetrieveAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/minesweeper/game/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"minesweeper",
+						"game",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RetrieveById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/minesweeper/game/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"minesweeper",
+						"game",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
