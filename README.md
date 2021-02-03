@@ -2,10 +2,7 @@
 
 Miesweeper-api challenge project.
 
-For information you can visit our [Wiki](https://github.com/QuiqueScampini/minesweeper-API/wiki) or see the links below.
-
 - #### [Challenge Statement](https://github.com/QuiqueScampini/minesweeper-API/wiki/Challenge-Statement)
-- #### [Api Definition](https://github.com/QuiqueScampini/minesweeper-API/wiki/Api-Definition)
 
 ## Requirements
 - Java 11
@@ -35,7 +32,9 @@ curl --location --request POST 'http://localhost:8080/minesweeper/game' \
   "user": "Licher"
 }'
 ```
-Returns GameResponse
+Returns 
+- [GameResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#gameresponse)
+- [ErrorResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#errorresponse)
 
 #### Flag/Reveal a Cell
 ```shell script
@@ -47,24 +46,33 @@ curl --location --request PUT 'http://localhost:8080/minesweeper/game/1' \
   "row": 0
 }'
 ```
-Returns GameResponse
+Returns 
+- [GameResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#gameresponse)
+- [ErrorResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#errorresponse)
+
 #### Pause Game
 ```shell script
 curl --location --request PATCH 'http://localhost:8080/minesweeper/game/10'
 ```
-Returns GameResponse
+Returns 
+- [GameResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#gameresponse)
+- [ErrorResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#errorresponse)
 
 #### Retrieve Games by Id
 ```shell script
 curl --location --request GET 'http://localhost:8080/minesweeper/game/1'
 ```
-Returns GamesResponse
+Returns 
+- [GameResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#gameresponse)
+- [ErrorResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#errorresponse)
 
 #### Retrieve Games by User (If not user sent this will bring all games)
 ```shell script
 curl --location --request GET 'http://localhost:8080/minesweeper/game?user=Licher'
 ```
-Returns GamesResponse
+Returns 
+- [GamesResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#gamesresponse)
+- [ErrorResponse](https://github.com/QuiqueScampini/minesweeper-API/blob/master/README.md#errorresponse)
 
 ### Responses Examples
 #### GameResponse
