@@ -28,5 +28,6 @@ For information you can visit our [Wiki](https://github.com/QuiqueScampini/mines
 - As this will be a mobile app I used an H2 embedded database that saves data in the filesystem where the app is running.
 - Once created the database it can't be erased, you will have to delete it from filesystem and start the app again.
 - As we only have to distinguish the user that started the game, I only save it's name in the game data. If more user data is needed the model may not be enough.
+- As this wil be a standalone mobile app concurrent request where not considered.
 
  
