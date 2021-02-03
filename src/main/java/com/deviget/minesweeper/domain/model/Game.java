@@ -3,6 +3,7 @@ package com.deviget.minesweeper.domain.model;
 import com.deviget.minesweeper.repository.JpaBoardConverter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.deviget.minesweeper.domain.model.GameStatus.CREATED;
@@ -25,7 +26,12 @@ public class Game {
 
 	private int leftFlags;
 
+	private LocalDateTime lastUpdateTime;
+
+	private int gameTime;
+
 	public Game() {
+
 	}
 
 	public Game(String user, List<List<Cell>> board, int leftFlags) {
@@ -33,6 +39,7 @@ public class Game {
 		this.status = CREATED;
 		this.board = board;
 		this.leftFlags = leftFlags;
+		this.gameTime = 0;
 	}
 
 	public Integer getId() {
@@ -61,5 +68,21 @@ public class Game {
 
 	public int getLeftFlags() {
 		return leftFlags;
+	}
+
+	public LocalDateTime getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(LocalDateTime lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public int getGameTime() {
+		return gameTime;
+	}
+
+	public void setGameTime(int gameTime) {
+		this.gameTime = gameTime;
 	}
 }
