@@ -30,6 +30,7 @@ public class Swagger2Config {
 		return new ApiInfoBuilder()
 				.title("Minesweeper API")
 				.description("Minesweeper Api Code Challenge")
+				.version("2.0")
 				.contact(this.contact())
 				.build();
 	}
