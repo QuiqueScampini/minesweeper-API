@@ -8,6 +8,7 @@ import com.deviget.minesweeper.web.validator.RequestValidator;
 import com.deviget.minesweeper.domain.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/minesweeper")
@@ -22,6 +23,11 @@ public class MinesWeeperController {
 	@GetMapping("/health-check")
 	public String index() {
 		return "I'm MinesWeeper Api and I'm OK";
+	}
+
+	@RequestMapping(value = {"","/api-docs"})
+	public RedirectView redirect() {
+		return new RedirectView("/swagger-ui.html");
 	}
 
 	@ResponseBody

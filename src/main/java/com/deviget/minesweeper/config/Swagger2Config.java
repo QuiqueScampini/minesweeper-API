@@ -19,8 +19,8 @@ public class Swagger2Config {
 	public Docket getApiInfo() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.deviget.minesweeper.controller"))
-				.paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.deviget.minesweeper.web.controller"))
+				.paths(PathSelectors.ant("/minesweeper/game/**"))
 				.build()
 				.apiInfo(this.metaData());
 	}
