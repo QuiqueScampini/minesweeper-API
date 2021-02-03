@@ -1,12 +1,10 @@
 package com.deviget.minesweeper.api.response;
 
-import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
 
 public class ErrorResponse {
 
-	private HttpStatus status;
+	private ErrorStatus status;
 	private LocalDateTime timestamp;
 	private String message;
 
@@ -14,19 +12,19 @@ public class ErrorResponse {
 		this.timestamp =  LocalDateTime.now();
 	}
 
-	public ErrorResponse(HttpStatus status, Throwable ex) {
+	public ErrorResponse(ErrorStatus status, Throwable ex) {
 		this();
 		this.status = status;
 		this.message = ex.getLocalizedMessage();
 	}
 
-	public ErrorResponse(HttpStatus status, String message) {
+	public ErrorResponse(ErrorStatus status, String message) {
 		this();
 		this.status = status;
 		this.message = message;
 	}
 
-	public HttpStatus getStatus() {
+	public ErrorStatus getStatus() {
 		return status;
 	}
 
