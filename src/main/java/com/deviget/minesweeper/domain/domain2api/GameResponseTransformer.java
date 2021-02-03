@@ -3,6 +3,7 @@ package com.deviget.minesweeper.domain.domain2api;
 import com.deviget.minesweeper.api.response.GameResponse;
 import com.deviget.minesweeper.api.response.GamesResponse;
 import com.deviget.minesweeper.domain.model.Game;
+import com.deviget.minesweeper.domain.service.GameOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class GameResponseTransformer {
 	private CellsResponseTransformer cellsResponseTransformer;
 
 	@Autowired
-	private GameTimeResolver gameTimeResolver;
+	private GameOperation gameOperation;
 
 	public GamesResponse transform(List<Game> games, String user) {
 		List<GameResponse> gameResponses = games.stream()
@@ -31,7 +32,7 @@ public class GameResponseTransformer {
 				.withUser(game.getUser())
 				.withStatus(game.getStatus())
 				.withBoard(this.cellsResponseTransformer.transform(game.getBoard()))
-				.withGameTime(this.gameTimeResolver.resolve(game))
+				.withGameTime(this.gameOperation.calculateGameTime(game))
 				.withLeftFlags(game.getLeftFlags())
 				.build();
 	}

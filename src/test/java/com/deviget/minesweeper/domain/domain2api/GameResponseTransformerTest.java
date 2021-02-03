@@ -5,6 +5,7 @@ import com.deviget.minesweeper.api.response.GamesResponse;
 import com.deviget.minesweeper.api.response.RowResponse;
 import com.deviget.minesweeper.domain.model.Game;
 import com.deviget.minesweeper.domain.model.GameStatus;
+import com.deviget.minesweeper.domain.service.GameOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,7 +36,7 @@ class GameResponseTransformerTest {
 	private CellsResponseTransformer cellsResponseTransformer;
 
 	@Mock
-	private GameTimeResolver gameTimeResolver;
+	private GameOperation gameOperation;
 
 	@Mock
 	private Game game;
@@ -50,7 +51,7 @@ class GameResponseTransformerTest {
 		when(game.getUser()).thenReturn(USER);
 		when(game.getStatus()).thenReturn(GAME_STATUS);
 		when(game.getLeftFlags()).thenReturn(FLAGS);
-		when(gameTimeResolver.resolve(game)).thenReturn(TIME);
+		when(gameOperation.calculateGameTime(game)).thenReturn(TIME);
 
 		when(cellsResponseTransformer.transform(anyList())).thenReturn(board);
 	}
