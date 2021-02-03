@@ -37,6 +37,10 @@ You can see the [Api Definition](https://github.com/QuiqueScampini/minesweeper-A
 - You can put more flags than mines so leftFlags counter would be negative.
 - When you QUESTION mark a cell it recover that leftFlag.
 - If you send an invalid ActionRequest Action it will return a 400 error but not an ErrorResponse.
+- If game is finished any action will have no efect.
+- If a cell has a FLAG or is REVEALED a REVEAL action will have no efect.
+- If a cell is REVEAL any action will have no efect.
+
 
 ## Design considerations
 
@@ -45,5 +49,9 @@ You can see the [Api Definition](https://github.com/QuiqueScampini/minesweeper-A
 - As we only have to distinguish the user that started the game, I only save it's name in the game data. If more user data is needed the model may not be enough.
 - As this wil be a standalone mobile app concurrent request where not considered.
 - Log file and database will be written in the application path. 
+- Repository and Domain Game model is shared, this is not a recomended practice. 
+- ApiResponses shares domain enums for GameStatus and CellContent, this is not a recomended practice too. 
+- The last 2 items were designed this way because of the size of the app, if the app grows it would be recomended to have 2 diferent models with a transformer from repository to domain for repository and domain entities and an api specific GameStatus and CellContent.
+
 
  
