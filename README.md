@@ -17,6 +17,9 @@ Miesweeper-api challenge project.
     
 - This will run the app on http://localhost:8080
 
+## Cloud project
+App is Running in an [AWS EC2 Machine](http://ec2-52-14-222-170.us-east-2.compute.amazonaws.com:8080/minesweeper)
+
 ## Api Definition 
 Api documentation could be seen on swagger http://localhost:8080/minesweeper
 
