@@ -27,7 +27,7 @@ You can see the [Api Definition](https://github.com/QuiqueScampini/minesweeper-A
 
 ## Client Library
 There's a [Client Library](https://github.com/QuiqueScampini/minesweeper-client) made in Scala.
-The .ivy2 folder with the jar is in Utils
+The .ivy2 folder with the jar is in [Utils Folder](https://github.com/QuiqueScampini/minesweeper-API/tree/master/utils)
 
 ## Considerations
 
