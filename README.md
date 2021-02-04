@@ -25,6 +25,10 @@ Api documentation could be seen on swagger http://localhost:8080/minesweeper
 
 You can see the [Api Definition](https://github.com/QuiqueScampini/minesweeper-API/wiki/Api-Definition) on Wiki.
 
+## Client Library
+There's a [Client Library](https://github.com/QuiqueScampini/minesweeper-client) made in Scala.
+The .ivy2 folder with the jar is in Utils
+
 ## Considerations
 
 - New games can have a max of 30 rows, 30 cols and 99 mines.
